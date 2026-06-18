@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#painel {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 18px;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}
