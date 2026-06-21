@@ -17,7 +17,6 @@ function carregarCena(id) {
   var cena = buscarCena(id);
   if (!cena) return;
 
-  // Fecha painel de recurso se estiver aberto
   fecharRecurso();
 
   cenaAtual = id;
@@ -36,10 +35,29 @@ function carregarCena(id) {
   });
 }
 
-// Conecta o botão fechar do painel de recurso
+// Conecta eventos dos botões
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btnFecharRecurso').addEventListener('click', function () {
     fecharRecurso();
   });
+
+  document.getElementById('btnPercurso').addEventListener('click', function () {
+    abrirPainelPercurso();
+  });
+
+  document.getElementById('btnFecharPercurso').addEventListener('click', function () {
+    fecharPainelPercurso();
+  });
+
+  document.getElementById('btnAnterior').addEventListener('click', function () {
+    etapaAnterior();
+    atualizarPainelPercurso();
+  });
+
+  document.getElementById('btnProxima').addEventListener('click', function () {
+    proximaEtapa();
+    atualizarPainelPercurso();
+  });
+
   carregarCena('antesala');
 });

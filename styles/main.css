@@ -76,3 +76,95 @@ body {
 #btnFecharRecurso:hover {
   background: #F57C00;
 }
+
+#btnPercurso {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 15;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#btnPercurso:hover {
+  background: #388E3C;
+}
+
+#painelPercurso {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.88);
+  color: white;
+  padding: 24px 28px;
+  border-radius: 12px;
+  z-index: 25;
+  max-width: 400px;
+  width: 80vw;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#percursoTitulo {
+  margin: 0 0 10px 0;
+  font-size: 22px;
+  color: #4CAF50;
+}
+
+#percursoDescricao {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#percursoProgresso {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#percursoBotoes {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+#btnAnterior, #btnProxima {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#btnAnterior:disabled, #btnProxima:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#btnFecharPercurso {
+  background: transparent;
+  color: #ccc;
+  border: 1px solid #555;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#btnFecharPercurso:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
