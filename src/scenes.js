@@ -6,7 +6,7 @@ const labmakerScenes = [
     panorama: 'assets/panoramas/01-antesala-recepcao.png',
     description: 'Ambiente de recepção do LabMaker. Ponto de partida do tour pelo laboratório maker.',
     navigationHotspots: [
-      { label: 'Entrar no\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Entrar no\nLabMaker', target: 'hub', position: { x: 0, y: 0, z: -5 } }
     ]
   },
   {
@@ -29,6 +29,14 @@ const labmakerScenes = [
     description: 'Estação com computadores, robôs educacionais e kits de programação visual.',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ],
+    resourceHotspots: [
+      {
+        label: 'Scratch',
+        titulo: 'Scratch',
+        descricao: 'Ambiente de programação visual por blocos para desenvolver lógica, sequência, eventos e resolução de problemas.',
+        position: { x: 1.5, y: 0.5, z: -5 }
+      }
     ]
   },
   {
@@ -38,6 +46,14 @@ const labmakerScenes = [
     description: 'Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ],
+    resourceHotspots: [
+      {
+        label: 'Sensores e Atuadores',
+        titulo: 'Sensores e Atuadores',
+        descricao: 'Componentes usados para perceber o ambiente e executar ações em projetos de robótica e automação.',
+        position: { x: 1.5, y: 0.5, z: -5 }
+      }
     ]
   },
   {
@@ -47,6 +63,14 @@ const labmakerScenes = [
     description: 'Espaço com impressoras 3D, cortadora a laser e materiais para fabricação digital.',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ],
+    resourceHotspots: [
+      {
+        label: 'Impressão 3D',
+        titulo: 'Impressão 3D',
+        descricao: 'Processo de fabricação por adição usado para transformar modelos digitais em objetos físicos.',
+        position: { x: 1.5, y: 0.5, z: -5 }
+      }
     ]
   },
   {
@@ -56,6 +80,14 @@ const labmakerScenes = [
     description: 'Arena com robôs controlados por programação para competições e desafios.',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ],
+    resourceHotspots: [
+      {
+        label: 'Desafio Robótico',
+        titulo: 'Desafio Robótico',
+        descricao: 'Espaço de teste, estratégia e ajuste de soluções robóticas em situação de desafio.',
+        position: { x: 1.5, y: 0.5, z: -5 }
+      }
     ]
   }
 ];

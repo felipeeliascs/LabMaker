@@ -32,3 +32,47 @@ body {
   margin: 4px 0 0 0;
   opacity: 0.85;
 }
+
+#painelRecurso {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.88);
+  color: white;
+  padding: 24px 28px;
+  border-radius: 12px;
+  z-index: 20;
+  max-width: 380px;
+  width: 80vw;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#recursoTitulo {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  color: #FF9800;
+}
+
+#recursoDescricao {
+  margin: 0 0 18px 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#btnFecharRecurso {
+  background: #FF9800;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#btnFecharRecurso:hover {
+  background: #F57C00;
+}

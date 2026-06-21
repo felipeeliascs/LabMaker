@@ -13,6 +13,7 @@
     <a-camera>
       <a-cursor></a-cursor>
     </a-camera>
+    <a-entity id="hotspotRoot"></a-entity>
   </a-scene>
 
   <div id="painel">
@@ -20,7 +21,16 @@
     <p id="descricaoCena"></p>
   </div>
 
+  <div id="painelRecurso">
+    <div id="recursoConteudo">
+      <h3 id="recursoTitulo"></h3>
+      <p id="recursoDescricao"></p>
+      <button id="btnFecharRecurso">Fechar</button>
+    </div>
+  </div>
+
   <script src="src/scenes.js"></script>
+  <script src="src/ui.js"></script>
   <script src="src/hotspots.js"></script>
   <script src="src/main.js"></script>
 </body>

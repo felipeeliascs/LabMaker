@@ -17,17 +17,29 @@ function carregarCena(id) {
   var cena = buscarCena(id);
   if (!cena) return;
 
+  // Fecha painel de recurso se estiver aberto
+  fecharRecurso();
+
   cenaAtual = id;
   sky.setAttribute('src', cena.panorama);
   nomeCena.textContent = cena.name;
   descricaoCena.textContent = cena.description;
 
+  limparHotspots();
+
   criarHotspotsNavegacao(cena, function (destino) {
     carregarCena(destino);
   });
+
+  criarHotspotsRecurso(cena, function (titulo, descricao) {
+    abrirRecurso(titulo, descricao);
+  });
 }
 
-// Inicia o tour na Antesala
+// Conecta o botão fechar do painel de recurso
 document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('btnFecharRecurso').addEventListener('click', function () {
+    fecharRecurso();
+  });
   carregarCena('antesala');
 });
