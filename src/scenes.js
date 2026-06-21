@@ -1,0 +1,61 @@
+// Dados das 6 cenas do tour LabMaker
+const labmakerScenes = [
+  {
+    id: 'antesala',
+    name: 'Antesala / Recepção',
+    panorama: 'assets/panoramas/01-antesala-recepcao.png',
+    description: 'Ambiente de recepção do LabMaker. Ponto de partida do tour pelo laboratório maker.',
+    navigationHotspots: [
+      { label: 'Entrar no\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ]
+  },
+  {
+    id: 'hub',
+    name: 'Hub Central',
+    panorama: 'assets/panoramas/02-hub-central.png',
+    description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
+    navigationHotspots: [
+      { label: 'Programação\ne Robótica', target: 'programacao', position: { x: -1.5, y: 0.5, z: -5 } },
+      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', position: { x: -1.5, y: -0.5, z: -5 } },
+      { label: 'Fabricação\nDigital', target: 'fabricacao', position: { x: 1.5, y: 0.5, z: -5 } },
+      { label: 'Arena de Batalha\nde Robôs', target: 'arena', position: { x: 1.5, y: -0.5, z: -5 } },
+      { label: 'Voltar à\nRecepção', target: 'antesala', position: { x: 0, y: 0, z: -5 } }
+    ]
+  },
+  {
+    id: 'programacao',
+    name: 'Programação e Robótica',
+    panorama: 'assets/panoramas/03-programacao-robotica.png',
+    description: 'Estação com computadores, robôs educacionais e kits de programação visual.',
+    navigationHotspots: [
+      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ]
+  },
+  {
+    id: 'eletronica',
+    name: 'Eletrônica e Prototipagem',
+    panorama: 'assets/panoramas/04-eletronica-prototipagem.png',
+    description: 'Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.',
+    navigationHotspots: [
+      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ]
+  },
+  {
+    id: 'fabricacao',
+    name: 'Fabricação Digital',
+    panorama: 'assets/panoramas/05-fabricacao-digital.png',
+    description: 'Espaço com impressoras 3D, cortadora a laser e materiais para fabricação digital.',
+    navigationHotspots: [
+      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ]
+  },
+  {
+    id: 'arena',
+    name: 'Arena de Batalha de Robôs',
+    panorama: 'assets/panoramas/06-arena-batalha-robos.png',
+    description: 'Arena com robôs controlados por programação para competições e desafios.',
+    navigationHotspots: [
+      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+    ]
+  }
+];

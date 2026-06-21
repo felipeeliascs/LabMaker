@@ -16,6 +16,19 @@ body {
   font-size: 18px;
   z-index: 10;
   pointer-events: none;
-  white-space: nowrap;
+  text-align: center;
   user-select: none;
+  max-width: 80vw;
+}
+
+#nomeCena {
+  display: block;
+  font-weight: bold;
+}
+
+#descricaoCena {
+  display: block;
+  font-size: 14px;
+  margin: 4px 0 0 0;
+  opacity: 0.85;
 }
