@@ -21,6 +21,7 @@ function carregarCena(id) {
 
   cenaAtual = id;
   sky.setAttribute('src', cena.panorama);
+  sky.setAttribute('rotation', cena.initialRotation || '0 -90 0');
   nomeCena.textContent = cena.name;
   descricaoCena.textContent = cena.description;
 

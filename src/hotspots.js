@@ -1,6 +1,33 @@
 // Gerencia a criação e remoção de hotspots de navegação e recurso
 var hotspotEntities = [];
 
+// Converte coordenadas angulares (yaw/pitch) para posição e rotação 3D
+// yaw: rotação horizontal em graus (0 = frente)
+// pitch: rotação vertical em graus (0 = altura da câmera)
+// radius: distância da câmera em unidades do mundo
+// Nota: yaw e pitch são tratados como ângulos do mundo A-Frame
+// Nota: compensação por initialRotation da cena será avaliada em etapa futura
+function converterYawPitchParaTransform(view) {
+  var radius = 4.5;
+  var yawRad = view.yaw * Math.PI / 180;
+  var pitchRad = view.pitch * Math.PI / 180;
+  
+  // Posição radial
+  var x = radius * Math.cos(pitchRad) * Math.sin(yawRad);
+  var y = 1.6 + radius * Math.sin(pitchRad);
+  var z = -radius * Math.cos(pitchRad) * Math.cos(yawRad);
+  
+  // Rotação para orientar o hotspot para o centro
+  var rotX = view.pitch;
+  var rotY = -view.yaw;
+  var rotZ = 0;
+  
+  return {
+    position: { x: x, y: y, z: z },
+    rotation: { x: rotX, y: rotY, z: rotZ }
+  };
+}
+
 function limparHotspots() {
   hotspotEntities.forEach(function (el) {
     if (el.parentNode) {
@@ -13,7 +40,13 @@ function limparHotspots() {
 function criarHotspotsNavegacao(cena, aoClicar) {
   cena.navigationHotspots.forEach(function (h) {
     var el = document.createElement('a-entity');
-    el.setAttribute('position', h.position);
+    if (h.view) {
+      var transform = converterYawPitchParaTransform(h.view);
+      el.setAttribute('position', transform.position);
+      el.setAttribute('rotation', transform.rotation);
+    } else {
+      el.setAttribute('position', h.position);
+    }
     el.setAttribute('class', 'clickable');
 
     // Círculo 2D translúcido azul
@@ -78,7 +111,13 @@ function criarHotspotsRecurso(cena, aoAbrir) {
 
   cena.resourceHotspots.forEach(function (r) {
     var el = document.createElement('a-entity');
-    el.setAttribute('position', r.position);
+    if (r.view) {
+      var transform = converterYawPitchParaTransform(r.view);
+      el.setAttribute('position', transform.position);
+      el.setAttribute('rotation', transform.rotation);
+    } else {
+      el.setAttribute('position', r.position);
+    }
     el.setAttribute('class', 'clickable');
 
     // Círculo 2D translúcido laranja

@@ -5,8 +5,9 @@ const labmakerScenes = [
     name: 'Antesala / Recepção',
     panorama: 'assets/panoramas/01-antesala-recepcao.png',
     description: 'Ambiente de recepção do LabMaker. Ponto de partida do tour pelo laboratório maker.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Entrar no\nLabMaker', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -90, pitch: -30 } }
     ]
   },
   {
@@ -14,6 +15,7 @@ const labmakerScenes = [
     name: 'Hub Central',
     panorama: 'assets/panoramas/02-hub-central.png',
     description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Programação\ne Robótica', target: 'programacao', position: { x: -1.5, y: 0.5, z: -5 } },
       { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', position: { x: -1.5, y: -0.5, z: -5 } },
@@ -27,6 +29,7 @@ const labmakerScenes = [
     name: 'Programação e Robótica',
     panorama: 'assets/panoramas/03-programacao-robotica.png',
     description: 'Estação com computadores, robôs educacionais e kits de programação visual.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
     ],
@@ -44,6 +47,7 @@ const labmakerScenes = [
     name: 'Eletrônica e Prototipagem',
     panorama: 'assets/panoramas/04-eletronica-prototipagem.png',
     description: 'Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
     ],
@@ -61,6 +65,7 @@ const labmakerScenes = [
     name: 'Fabricação Digital',
     panorama: 'assets/panoramas/05-fabricacao-digital.png',
     description: 'Espaço com impressoras 3D, cortadora a laser e materiais para fabricação digital.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
     ],
@@ -78,6 +83,7 @@ const labmakerScenes = [
     name: 'Arena de Batalha de Robôs',
     panorama: 'assets/panoramas/06-arena-batalha-robos.png',
     description: 'Arena com robôs controlados por programação para competições e desafios.',
+    initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
     ],
