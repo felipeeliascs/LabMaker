@@ -77,17 +77,10 @@ body {
   background: #F57C00;
 }
 
-#botoesSuperior {
+#btnPercurso {
   position: fixed;
   top: 16px;
   right: 16px;
-  z-index: 15;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-#btnPercurso {
   background: #4CAF50;
   color: white;
   border: none;
@@ -95,28 +88,12 @@ body {
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
+  z-index: 15;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 #btnPercurso:hover {
   background: #388E3C;
-}
-
-#btnPiloto {
-  background: #555;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  font-family: Arial, Helvetica, sans-serif;
-  text-decoration: none;
-  text-align: center;
-}
-
-#btnPiloto:hover {
-  background: #333;
 }
 
 #painelPercurso {
@@ -190,88 +167,4 @@ body {
 
 #btnFecharPercurso:hover {
   background: rgba(255, 255, 255, 0.1);
-}
-
-/* Estilos da página piloto */
-body.pagina-piloto {
-  overflow: auto;
-  background: #f5f5f5;
-  color: #333;
-  padding: 0;
-  margin: 0;
-}
-
-.pagina-piloto header {
-  background: #2196F3;
-  color: white;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.pagina-piloto header h1 {
-  margin: 0 0 12px 0;
-  font-size: 28px;
-}
-
-.pagina-piloto .header-intro {
-  margin: 0 auto;
-  font-size: 15px;
-  line-height: 1.5;
-  max-width: 600px;
-  opacity: 0.9;
-}
-
-.pagina-piloto main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 32px 20px;
-}
-
-.pagina-piloto section {
-  margin-bottom: 32px;
-}
-
-.pagina-piloto h2 {
-  color: #2196F3;
-  font-size: 20px;
-  margin: 0 0 12px 0;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #e0e0e0;
-}
-
-.pagina-piloto p {
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.pagina-piloto ol {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.pagina-piloto li {
-  font-size: 15px;
-  line-height: 1.8;
-}
-
-.pagina-piloto .btn-container {
-  text-align: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.pagina-piloto .btn-acessar {
-  display: inline-block;
-  background: #4CAF50;
-  color: white;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-size: 16px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.pagina-piloto .btn-acessar:hover {
-  background: #388E3C;
 }

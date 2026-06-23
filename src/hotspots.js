@@ -16,11 +16,18 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     el.setAttribute('position', h.position);
     el.setAttribute('class', 'clickable');
 
-    // Círculo 2D plano azul
+    // Círculo 2D translúcido azul
     var circle = document.createElement('a-entity');
     circle.setAttribute('geometry', { primitive: 'circle', radius: 0.2 });
-    circle.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat' });
+    circle.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 0.3, transparent: true });
     el.appendChild(circle);
+
+    // Anel externo azul
+    var ring = document.createElement('a-entity');
+    ring.setAttribute('geometry', { primitive: 'ring', radiusInner: 0.22, radiusOuter: 0.26 });
+    ring.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 0.8, transparent: true });
+    ring.setAttribute('position', { x: 0, y: 0, z: 0.002 });
+    el.appendChild(ring);
 
     // Ícone seta 2D (haste + ponta), direita ou esquerda
     var direcao = (h.target === 'hub' || h.target === 'antesala') ? -1 : 1;
@@ -74,11 +81,18 @@ function criarHotspotsRecurso(cena, aoAbrir) {
     el.setAttribute('position', r.position);
     el.setAttribute('class', 'clickable');
 
-    // Círculo 2D laranja (maior, mais perceptível)
+    // Círculo 2D translúcido laranja
     var circle = document.createElement('a-entity');
     circle.setAttribute('geometry', { primitive: 'circle', radius: 0.20 });
-    circle.setAttribute('material', { color: '#FF9800', side: 'double', shader: 'flat' });
+    circle.setAttribute('material', { color: '#FF9800', side: 'double', shader: 'flat', opacity: 0.3, transparent: true });
     el.appendChild(circle);
+
+    // Anel externo laranja
+    var ring = document.createElement('a-entity');
+    ring.setAttribute('geometry', { primitive: 'ring', radiusInner: 0.22, radiusOuter: 0.26 });
+    ring.setAttribute('material', { color: '#FF9800', side: 'double', shader: 'flat', opacity: 0.8, transparent: true });
+    ring.setAttribute('position', { x: 0, y: 0, z: 0.002 });
+    el.appendChild(ring);
 
     // Ícone de informação 2D (ponto + haste) — geometrias planas
     var iconGroup = document.createElement('a-entity');
