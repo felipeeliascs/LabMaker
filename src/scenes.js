@@ -17,11 +17,11 @@ const labmakerScenes = [
     description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Programação\ne Robótica', target: 'programacao', position: { x: -1.5, y: 0.5, z: -5 } },
-      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', position: { x: -1.5, y: -0.5, z: -5 } },
-      { label: 'Fabricação\nDigital', target: 'fabricacao', position: { x: 1.5, y: 0.5, z: -5 } },
-      { label: 'Arena de Batalha\nde Robôs', target: 'arena', position: { x: 1.5, y: -0.5, z: -5 } },
-      { label: 'Voltar à\nRecepção', target: 'antesala', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Programação\ne Robótica', target: 'programacao', view: { yaw: -16.70, pitch: -12.33 } },
+      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', view: { yaw: -16.70, pitch: -20.33 } },
+      { label: 'Fabricação\nDigital', target: 'fabricacao', view: { yaw: 16.70, pitch: -12.33 } },
+      { label: 'Arena de Batalha\nde Robôs', target: 'arena', view: { yaw: 16.70, pitch: -20.33 } },
+      { label: 'Voltar à\nRecepção', target: 'antesala', view: { yaw: 0, pitch: -17.66 } }
     ]
   },
   {
@@ -31,14 +31,14 @@ const labmakerScenes = [
     description: 'Estação com computadores, robôs educacionais e kits de programação visual.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Voltar ao\nHub Central', target: 'hub', view: { yaw: 0, pitch: -17.66 } }
     ],
     resourceHotspots: [
       {
         label: 'Scratch',
         titulo: 'Scratch',
         descricao: 'Ambiente de programação visual por blocos para desenvolver lógica, sequência, eventos e resolução de problemas.',
-        position: { x: 1.5, y: 0.5, z: -5 }
+        view: { yaw: 16.70, pitch: -12.33 }
       }
     ]
   },
@@ -49,14 +49,14 @@ const labmakerScenes = [
     description: 'Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Voltar ao\nHub Central', target: 'hub', view: { yaw: 0, pitch: -17.66 } }
     ],
     resourceHotspots: [
       {
         label: 'Sensores e Atuadores',
         titulo: 'Sensores e Atuadores',
         descricao: 'Componentes usados para perceber o ambiente e executar ações em projetos de robótica e automação.',
-        position: { x: 1.5, y: 0.5, z: -5 }
+        view: { yaw: 16.70, pitch: -12.33 }
       }
     ]
   },
@@ -67,14 +67,14 @@ const labmakerScenes = [
     description: 'Espaço com impressoras 3D, cortadora a laser e materiais para fabricação digital.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Voltar ao\nHub Central', target: 'hub', view: { yaw: 0, pitch: -17.66 } }
     ],
     resourceHotspots: [
       {
         label: 'Impressão 3D',
         titulo: 'Impressão 3D',
         descricao: 'Processo de fabricação por adição usado para transformar modelos digitais em objetos físicos.',
-        position: { x: 1.5, y: 0.5, z: -5 }
+        view: { yaw: 16.70, pitch: -12.33 }
       }
     ]
   },
@@ -85,14 +85,14 @@ const labmakerScenes = [
     description: 'Arena com robôs controlados por programação para competições e desafios.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Voltar ao\nHub Central', target: 'hub', position: { x: 0, y: 0, z: -5 } }
+      { label: 'Voltar ao\nHub Central', target: 'hub', view: { yaw: 0, pitch: -17.66 } }
     ],
     resourceHotspots: [
       {
         label: 'Desafio Robótico',
         titulo: 'Desafio Robótico',
         descricao: 'Espaço de teste, estratégia e ajuste de soluções robóticas em situação de desafio.',
-        position: { x: 1.5, y: 0.5, z: -5 }
+        view: { yaw: 16.70, pitch: -12.33 }
       }
     ]
   }
