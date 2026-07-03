@@ -7,7 +7,7 @@ const labmakerScenes = [
     description: 'Ambiente de recepção do LabMaker. Ponto de partida do tour pelo laboratório maker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -90, pitch: -30 } }
+      { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -23, pitch: -0 } }
     ]
   },
   {
@@ -17,11 +17,11 @@ const labmakerScenes = [
     description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Programação\ne Robótica', target: 'programacao', view: { yaw: -16.70, pitch: -12.33 } },
-      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', view: { yaw: -16.70, pitch: -20.33 } },
-      { label: 'Fabricação\nDigital', target: 'fabricacao', view: { yaw: 16.70, pitch: -12.33 } },
-      { label: 'Arena de Batalha\nde Robôs', target: 'arena', view: { yaw: 16.70, pitch: -20.33 } },
-      { label: 'Voltar à\nRecepção', target: 'antesala', view: { yaw: 0, pitch: -17.66 } }
+      { label: 'Programação\ne Robótica', target: 'programacao', view: { yaw: -30, pitch: -5 }, proporcao: 0.9 },
+      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', view: { yaw: -11, pitch: 0 }, proporcao: 0.7 },
+      { label: 'Fabricação\nDigital', target: 'fabricacao', view: { yaw: 2, pitch: 5 }, proporcao: 0.7 },
+      { label: 'Arena \nde Robôs', target: 'arena', view: { yaw: 10, pitch: 3 }, proporcao: 0.7 },
+      { label: 'Voltar à\nRecepção', target: 'antesala', view: { yaw: 30  , pitch: 5 } }
     ]
   },
   {

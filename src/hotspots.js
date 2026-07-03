@@ -28,6 +28,15 @@ function converterYawPitchParaTransform(view) {
   };
 }
 
+function obterProporcaoHotspot(hotspot) {
+  if (hotspot.proporcao !== undefined && 
+      typeof hotspot.proporcao === 'number' && 
+      hotspot.proporcao > 0) {
+    return hotspot.proporcao;
+  }
+  return 1;
+}
+
 function limparHotspots() {
   hotspotEntities.forEach(function (el) {
     if (el.parentNode) {
@@ -98,6 +107,9 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     textBold.setAttribute('text', { value: h.label, align: 'center', color: 'white', width: 4 });
     textBold.setAttribute('position', { x: 0, y: -0.35, z: 0.003 });
     el.appendChild(textBold);
+
+    var proporcao = obterProporcaoHotspot(h);
+    el.setAttribute('scale', { x: proporcao, y: proporcao, z: proporcao });
 
     el.addEventListener('click', function () { aoClicar(h.target); });
 
@@ -171,6 +183,9 @@ function criarHotspotsRecurso(cena, aoAbrir) {
     textBold.setAttribute('text', { value: r.label, align: 'center', color: 'white', width: 4 });
     textBold.setAttribute('position', { x: 0, y: -0.35, z: 0.003 });
     el.appendChild(textBold);
+
+    var proporcao = obterProporcaoHotspot(r);
+    el.setAttribute('scale', { x: proporcao, y: proporcao, z: proporcao });
 
     el.addEventListener('click', function () { aoAbrir(r.titulo, r.descricao); });
 
