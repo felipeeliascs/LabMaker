@@ -23,7 +23,10 @@ const labmakerScenes = [
         content: {
           title: 'LabMaker',
           description: 'Ambiente imersivo para práticas de robótica maker e programação visual.',
-          image: 'assets/panoramas/01-antesala-recepcao.png'
+          image: 'assets/panoramas/01-antesala-recepcao.png',
+          links: [
+            { label: 'Documentação', url: 'https://github.com/anomalyco/labmaker' }
+          ]
         }
       }
     ]

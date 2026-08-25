@@ -2,11 +2,21 @@
 function abrirRecurso(titulo, descricao) {
   fecharPainelPercurso();
   
-  // Limpar imagem anterior
+  // Limpar tudo anteriormente
   var imgEl = document.getElementById('recursoImagem');
-  imgEl.setAttribute('src', '');
-  imgEl.setAttribute('alt', '');
+  var acoesEl = document.getElementById('recursoAcoes');
+  
+  imgEl.src = '';
+  imgEl.alt = '';
   imgEl.style.display = 'none';
+  acoesEl.innerHTML = '';
+  acoesEl.style.display = 'none';
+  
+  // Fallback de imagem
+  imgEl.onerror = function() {
+    this.src = '';
+    this.style.display = 'none';
+  };
   
   // Processar conteúdo (tagData ou strings)
   if (typeof titulo === 'object' && titulo !== null && titulo.content) {
@@ -15,9 +25,13 @@ function abrirRecurso(titulo, descricao) {
     document.getElementById('recursoDescricao').textContent = titulo.content.description || '';
     
     if (titulo.content.image && titulo.content.image.trim() !== '') {
-      imgEl.setAttribute('src', titulo.content.image);
-      imgEl.setAttribute('alt', titulo.content.title || 'Imagem');
+      imgEl.src = titulo.content.image;
+      imgEl.alt = titulo.content.title || 'Imagem';
       imgEl.style.display = 'block';
+    }
+    
+    if (titulo.content.links && titulo.content.links.length > 0) {
+      criarLinks(titulo.content.links);
     }
   } else {
     // formato original: abrirRecurso(titulo, descricao) — resourceHotspot
@@ -26,6 +40,22 @@ function abrirRecurso(titulo, descricao) {
   }
   
   document.getElementById('painelRecurso').style.display = 'block';
+}
+
+function criarLinks(links) {
+  var acoesEl = document.getElementById('recursoAcoes');
+  links.forEach(function(link) {
+    if (link.url && link.url.trim() !== '') {
+      var a = document.createElement('a');
+      a.textContent = link.label;
+      a.href = link.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.className = 'acao-link';
+      acoesEl.appendChild(a);
+    }
+  });
+  acoesEl.style.display = 'block';
 }
 
 function fecharRecurso() {

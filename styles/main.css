@@ -88,6 +88,27 @@ body {
   background: #F57C00;
 }
 
+#recursoAcoes {
+  display: none;
+  margin: 12px 0;
+}
+
+.acao-link {
+  display: inline-block;
+  margin: 0 8px;
+  padding: 6px 12px;
+  border: 1px solid #FF9800;
+  border-radius: 4px;
+  color: #FF9800;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.acao-link:hover {
+  background: #FF9800;
+  color: white;
+}
+
 #btnPercurso {
   position: fixed;
   top: 16px;
