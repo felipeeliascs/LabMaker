@@ -1,6 +1,14 @@
 // Gerencia a criação e remoção de hotspots de navegação e recurso
 var hotspotEntities = [];
 
+// Constantes para labels dos hotspots (facilita ajustes futuros)
+var LABEL_LARGURA_CANVAS = 512;
+var LABEL_ALTURA_CANVAS = 192;
+var LABEL_TAMANHO_FONTE = 60;
+var LABEL_ALTURA_LINHA = 60;
+var LABEL_WIDTH_AFRAME = 1.6;
+var LABEL_HEIGHT_AFRAME = 0.4;
+
 // Converte coordenadas angulares (yaw/pitch) para posição e rotação 3D
 // yaw: rotação horizontal em graus (0 = frente)
 // pitch: rotação vertical em graus (0 = altura da câmera)
@@ -37,6 +45,32 @@ function obterProporcaoHotspot(hotspot) {
   return 1;
 }
 
+function criarTexturaLabel(texto, opcoes) {
+  var largura = opcoes.largura || LABEL_LARGURA_CANVAS;
+  var altura = opcoes.altura || LABEL_ALTURA_CANVAS;
+  var canvas = document.createElement('canvas');
+  canvas.width = largura;
+  canvas.height = altura;
+  var ctx = canvas.getContext('2d');
+  
+  // Fonte do sistema com suporte a acentos em português
+  ctx.font = 'bold ' + LABEL_TAMANHO_FONTE + 'px Arial, sans-serif';
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  // Processar quebra de linha
+  var linhas = texto.split('\n');
+  var linhaAltura = LABEL_ALTURA_LINHA;
+  var yInicial = (altura - (linhas.length - 1) * linhaAltura) / 2;
+  
+  linhas.forEach(function(linha, index) {
+    ctx.fillText(linha, largura / 2, yInicial + index * linhaAltura);
+  });
+  
+  return canvas.toDataURL('image/png');
+}
+
 function limparHotspots() {
   hotspotEntities.forEach(function (el) {
     if (el.parentNode) {
@@ -61,13 +95,13 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     // Círculo 2D translúcido azul
     var circle = document.createElement('a-entity');
     circle.setAttribute('geometry', { primitive: 'circle', radius: 0.2 });
-    circle.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 0.3, transparent: true });
+    circle.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 1, transparent: true });
     el.appendChild(circle);
 
     // Anel externo azul
     var ring = document.createElement('a-entity');
     ring.setAttribute('geometry', { primitive: 'ring', radiusInner: 0.22, radiusOuter: 0.26 });
-    ring.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 0.8, transparent: true });
+    ring.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 0.5, transparent: true });
     ring.setAttribute('position', { x: 0, y: 0, z: 0.002 });
     el.appendChild(ring);
 
@@ -96,17 +130,14 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     iconGroup.appendChild(ponta);
     el.appendChild(iconGroup);
 
-    // Texto do label abaixo (com negrito simulado)
-    var text = document.createElement('a-entity');
-    text.setAttribute('text', { value: h.label, align: 'center', color: 'white', width: 4 });
-    text.setAttribute('position', { x: 0, y: -0.35, z: 0 });
-    el.appendChild(text);
-
-    // Cópia com offset para negrito
-    var textBold = document.createElement('a-entity');
-    textBold.setAttribute('text', { value: h.label, align: 'center', color: 'white', width: 4 });
-    textBold.setAttribute('position', { x: 0, y: -0.35, z: 0.003 });
-    el.appendChild(textBold);
+    // Texto do label abaixo (renderizado via canvas para suporte a acentos)
+    var texturaLabel = criarTexturaLabel(h.label, { largura: LABEL_LARGURA_CANVAS, altura: LABEL_ALTURA_CANVAS });
+    var label = document.createElement('a-image');
+    label.setAttribute('src', texturaLabel);
+    label.setAttribute('width', LABEL_WIDTH_AFRAME);
+    label.setAttribute('height', LABEL_HEIGHT_AFRAME);
+    label.setAttribute('position', { x: 0, y: -0.35, z: 0.004 });
+    el.appendChild(label);
 
     var proporcao = obterProporcaoHotspot(h);
     el.setAttribute('scale', { x: proporcao, y: proporcao, z: proporcao });
@@ -172,17 +203,14 @@ function criarHotspotsRecurso(cena, aoAbrir) {
     fundo.setAttribute('position', { x: 0, y: -0.35, z: -0.001 });
     el.appendChild(fundo);
 
-    // Texto do recurso abaixo do círculo (maior, com negrito simulado)
-    var text = document.createElement('a-entity');
-    text.setAttribute('text', { value: r.label, align: 'center', color: 'white', width: 4 });
-    text.setAttribute('position', { x: 0, y: -0.35, z: 0 });
-    el.appendChild(text);
-
-    // Cópia com offset para negrito
-    var textBold = document.createElement('a-entity');
-    textBold.setAttribute('text', { value: r.label, align: 'center', color: 'white', width: 4 });
-    textBold.setAttribute('position', { x: 0, y: -0.35, z: 0.003 });
-    el.appendChild(textBold);
+    // Texto do recurso abaixo do círculo (renderizado via canvas para suporte a acentos)
+    var texturaLabel = criarTexturaLabel(r.label, { largura: LABEL_LARGURA_CANVAS, altura: LABEL_ALTURA_CANVAS });
+    var label = document.createElement('a-image');
+    label.setAttribute('src', texturaLabel);
+    label.setAttribute('width', LABEL_WIDTH_AFRAME);
+    label.setAttribute('height', LABEL_HEIGHT_AFRAME);
+    label.setAttribute('position', { x: 0, y: -0.35, z: 0.004 });
+    el.appendChild(label);
 
     var proporcao = obterProporcaoHotspot(r);
     el.setAttribute('scale', { x: proporcao, y: proporcao, z: proporcao });

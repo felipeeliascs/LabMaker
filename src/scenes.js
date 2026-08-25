@@ -8,6 +8,14 @@ const labmakerScenes = [
     initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -23, pitch: -0 } }
+    ],
+    tags: [
+      {
+        id: 'label-boas-vindas',
+        type: 'label',
+        view: { yaw: -45, pitch: -5 },
+        text: 'Bem-vindo ao LabMaker'
+      }
     ]
   },
   {

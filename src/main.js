@@ -34,6 +34,11 @@ function carregarCena(id) {
   criarHotspotsRecurso(cena, function (titulo, descricao) {
     abrirRecurso(titulo, descricao);
   });
+
+  window.labmakerTags.criarTags(cena, {
+    navigate: function (destino) { carregarCena(destino); },
+    abrirRecurso: function (titulo, descricao) { abrirRecurso(titulo, descricao); }
+  });
 }
 
 // Conecta eventos dos botões
