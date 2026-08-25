@@ -43,13 +43,8 @@ function criarTags(cena, handlers) {
       el.setAttribute('position', transform.position);
       el.setAttribute('rotation', transform.rotation);
       
-      // Criar container interno para conteúdo
-      var contentEl = document.createElement('a-entity');
-      contentEl.setAttribute('position', '0 0 0');
-      el.appendChild(contentEl);
-      
       // Criar conteúdo do tipo
-      window.labmakerLabelTag.criar(contentEl, tag, handlers);
+      window.labmakerLabelTag.criar(el, tag, handlers);
       
       document.getElementById('hotspotRoot').appendChild(el);
       tagEntities.push(el);
@@ -60,6 +55,7 @@ function criarTags(cena, handlers) {
 function limparTags() {
   tagEntities.forEach(function(el) {
     if (el.parentNode) {
+      window.labmakerLabelTag.limpar(el);
       el.parentNode.removeChild(el);
     }
   });
@@ -67,4 +63,7 @@ function limparTags() {
 }
 
 // Exportação para uso global
-window.labmakerTags = { criarTags: criarTags, limparTags: limparTags };
+window.labmakerTags = { 
+  criarTags: criarTags, 
+  limparTags: limparTags 
+};
