@@ -23,7 +23,7 @@ const labmakerScenes = [
         content: {
           title: 'LabMaker',
           description: 'Ambiente imersivo para práticas de robótica maker e programação visual.',
-          image: ''
+          image: 'assets/panoramas/01-antesala-recepcao.png'
         }
       }
     ]

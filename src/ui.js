@@ -2,13 +2,25 @@
 function abrirRecurso(titulo, descricao) {
   fecharPainelPercurso();
   
-  // Suporte a tagData (objeto com content) ou strings separados
+  // Limpar imagem anterior
+  var imgEl = document.getElementById('recursoImagem');
+  imgEl.setAttribute('src', '');
+  imgEl.setAttribute('alt', '');
+  imgEl.style.display = 'none';
+  
+  // Processar conteúdo (tagData ou strings)
   if (typeof titulo === 'object' && titulo !== null && titulo.content) {
-    // formato: abrirRecurso(tagData)
+    // formato: abrirRecurso(tagData) — MediaTag
     document.getElementById('recursoTitulo').textContent = titulo.content.title || '';
     document.getElementById('recursoDescricao').textContent = titulo.content.description || '';
+    
+    if (titulo.content.image && titulo.content.image.trim() !== '') {
+      imgEl.setAttribute('src', titulo.content.image);
+      imgEl.setAttribute('alt', titulo.content.title || 'Imagem');
+      imgEl.style.display = 'block';
+    }
   } else {
-    // formato original: abrirRecurso(titulo, descricao)
+    // formato original: abrirRecurso(titulo, descricao) — resourceHotspot
     document.getElementById('recursoTitulo').textContent = titulo || '';
     document.getElementById('recursoDescricao').textContent = descricao || '';
   }
