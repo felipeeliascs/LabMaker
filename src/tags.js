@@ -1,4 +1,6 @@
 // Gerencia a criação e remoção de tags
+// NOTA: Tags possuem ciclo de vida associado à cena (criadas no carregamento, destruídas ao trocar de cena)
+// Remoção explícita de listeners pode ser considerada em futuras versões
 var tagEntities = [];
 
 // Converte coordenadas angulares (yaw/pitch) para posição e rotação 3D
@@ -38,13 +40,23 @@ function criarTags(cena, handlers) {
     if (tag.type === 'label') {
       var el = criarTagElement(tag);
       
-      // Posicionar baseado em view (yaw/pitch)
       var transform = converterYawPitchParaTransform(tag.view);
       el.setAttribute('position', transform.position);
       el.setAttribute('rotation', transform.rotation);
       
-      // Criar conteúdo do tipo
       window.labmakerLabelTag.criar(el, tag, handlers);
+      
+      document.getElementById('hotspotRoot').appendChild(el);
+      tagEntities.push(el);
+    }
+    else if (tag.type === 'media') {
+      var el = criarTagElement(tag);
+      
+      var transform = converterYawPitchParaTransform(tag.view);
+      el.setAttribute('position', transform.position);
+      el.setAttribute('rotation', transform.rotation);
+      
+      window.labmakerMediaTag.criar(el, tag, handlers);
       
       document.getElementById('hotspotRoot').appendChild(el);
       tagEntities.push(el);
@@ -55,7 +67,20 @@ function criarTags(cena, handlers) {
 function limparTags() {
   tagEntities.forEach(function(el) {
     if (el.parentNode) {
-      window.labmakerLabelTag.limpar(el);
+      var tagType = el.getAttribute('data-tag-id');
+      if (el.querySelector('a-text') && el.querySelector('a-circle')) {
+        // Verifica se é tag conhecida e chama limpeza específica
+        if (el.getAttribute('data-interactive-type') === 'tag') {
+          var tipo = null;
+          // Determinar tipo baseado em atributos ou estrutura (simplificado)
+          // Em versão futura, usar mapa de tipos
+          if (el.querySelector('[color="#2196F3"]')) {
+            window.labmakerLabelTag.limpar(el);
+          } else if (el.querySelector('[color="#FF9800"]')) {
+            window.labmakerMediaTag.limpar(el);
+          }
+        }
+      }
       el.parentNode.removeChild(el);
     }
   });

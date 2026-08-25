@@ -15,6 +15,16 @@ const labmakerScenes = [
         type: 'label',
         view: { yaw: -45, pitch: -5 },
         text: 'Bem-vindo ao LabMaker'
+      },
+      {
+        id: 'media-informacoes',
+        type: 'media',
+        view: { yaw: -60, pitch: 0 },
+        content: {
+          title: 'LabMaker',
+          description: 'Ambiente imersivo para práticas de robótica maker e programação visual.',
+          image: ''
+        }
       }
     ]
   },

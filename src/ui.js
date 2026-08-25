@@ -1,8 +1,18 @@
 // Controle do painel de recursos educacionais
 function abrirRecurso(titulo, descricao) {
   fecharPainelPercurso();
-  document.getElementById('recursoTitulo').textContent = titulo;
-  document.getElementById('recursoDescricao').textContent = descricao;
+  
+  // Suporte a tagData (objeto com content) ou strings separados
+  if (typeof titulo === 'object' && titulo !== null && titulo.content) {
+    // formato: abrirRecurso(tagData)
+    document.getElementById('recursoTitulo').textContent = titulo.content.title || '';
+    document.getElementById('recursoDescricao').textContent = titulo.content.description || '';
+  } else {
+    // formato original: abrirRecurso(titulo, descricao)
+    document.getElementById('recursoTitulo').textContent = titulo || '';
+    document.getElementById('recursoDescricao').textContent = descricao || '';
+  }
+  
   document.getElementById('painelRecurso').style.display = 'block';
 }
 
