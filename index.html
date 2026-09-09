@@ -8,13 +8,25 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <a-scene>
+  <a-scene
+    id="mainScene"
+    cursor="rayOrigin: mouse; fuse: false"
+    raycaster="objects: .interativo; enabled: true">
     <a-sky id="mainSky" src="assets/panoramas/01-antesala-recepcao.png"></a-sky>
     <a-camera>
-      <a-cursor></a-cursor>
+      <a-cursor
+        id="vrCursor"
+        cursor="rayOrigin: entity; fuse: true; fuseTimeout: 1200"
+        raycaster="objects: .interativo; enabled: false"
+        visible="false">
+      </a-cursor>
     </a-camera>
     <a-entity id="hotspotRoot"></a-entity>
+    <a-entity id="vrPanelRoot" visible="false"></a-entity>
   </a-scene>
+  
+  <!-- Canvas oculto para renderização do painel VR -->
+  <canvas id="vrPanelCanvas" width="1024" height="640" hidden></canvas>
 
   <div id="painelRecurso">
     <div id="recursoConteudo">
@@ -48,11 +60,13 @@
 
   <script src="src/scenes.js"></script>
   <script src="src/steps.js"></script>
-  <script src="src/ui.js"></script>
+  <script src="src/vr-panel.js?v=0.6.4"></script>
+  <script src="src/ui.js?v=0.6.4"></script>
   <script src="src/hotspots.js"></script>
   <script src="src/tag-types/label.js"></script>
   <script src="src/tag-types/media.js"></script>
+  <script src="src/mode.js?v=0.6.4"></script>
   <script src="src/tags.js"></script>
-  <script src="src/main.js"></script>
+  <script src="src/main.js?v=0.6.4"></script>
 </body>
 </html>

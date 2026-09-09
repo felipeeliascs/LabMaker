@@ -11,6 +11,7 @@ function criarLabelTag(el, tagData, handlers) {
   circle.setAttribute('transparent', 'true');
   circle.setAttribute('opacity', '0.8');
   circle.setAttribute('position', '0 0 0');
+  circle.setAttribute('class', 'interativo');
   el.appendChild(circle);
   
   var texto = document.createElement('a-text');

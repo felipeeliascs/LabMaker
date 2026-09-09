@@ -96,6 +96,7 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     var circle = document.createElement('a-entity');
     circle.setAttribute('geometry', { primitive: 'circle', radius: 0.2 });
     circle.setAttribute('material', { color: '#2196F3', side: 'double', shader: 'flat', opacity: 1, transparent: true });
+    circle.setAttribute('class', 'interativo');
     el.appendChild(circle);
 
     // Anel externo azul
@@ -167,6 +168,7 @@ function criarHotspotsRecurso(cena, aoAbrir) {
     var circle = document.createElement('a-entity');
     circle.setAttribute('geometry', { primitive: 'circle', radius: 0.20 });
     circle.setAttribute('material', { color: '#FF9800', side: 'double', shader: 'flat', opacity: 0.3, transparent: true });
+    circle.setAttribute('class', 'interativo');
     el.appendChild(circle);
 
     // Anel externo laranja

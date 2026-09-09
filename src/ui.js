@@ -1,5 +1,17 @@
 // Controle do painel de recursos educacionais
 function abrirRecurso(titulo, descricao) {
+  // Modo VR: usar painel espacial
+  if (window.labmakerMode && window.labmakerMode.isVR()) {
+    if (window.labmakerVRPanel) {
+      // Se o painel já estiver aberto, recriar com novos dados
+      if (window.labmakerVRPanel.estaAberto()) {
+        window.labmakerVRPanel.fechar();
+      }
+      window.labmakerVRPanel.abrir(titulo, descricao);
+    }
+    return;
+  }
+  
   fecharPainelPercurso();
   
   // Limpar tudo anteriormente

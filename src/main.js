@@ -18,6 +18,11 @@ function carregarCena(id) {
   if (!cena) return;
 
   fecharRecurso();
+  
+  // Fechar painel espacial se estiver aberto
+  if (window.labmakerVRPanel) {
+    window.labmakerVRPanel.fechar();
+  }
 
   cenaAtual = id;
   sky.setAttribute('src', cena.panorama);
@@ -39,6 +44,10 @@ function carregarCena(id) {
     navigate: function (destino) { carregarCena(destino); },
     abrirRecurso: function (titulo, descricao) { abrirRecurso(titulo, descricao); }
   });
+
+  if (window.labmakerMode) {
+    window.labmakerMode.refreshInterativos();
+  }
 }
 
 // Conecta eventos dos botões
