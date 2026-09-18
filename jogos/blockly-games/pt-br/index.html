@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Games for tomorrow's programmers.">
+  <title>Blockly Games</title>
+  <link rel="stylesheet" href="common/common.css">
+  <link rel="stylesheet" href="index/style.css">
+  <script src="common/boot.js"></script>
+  <script src="common/menu-aliases.js"></script>
+</head>
+<body>
+  <div style="display: none">
+    <span id="title">BlocBot</span>
+  </div>
+  <div id="header">
+    <img id="banner" src="title-beta.png" height="51" width="244" alt="Blockly Games">
+    <div id="subtitle">Jogos para os programadores de amanhã.</div>
+  </div>
+  <svg height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g transform="translate(-150,-60)">
+      <svg height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="none" x="150" y="60">
+        <path id="path" d="M 10,15 C 15,60 35,100 50,70 S 80,20 90,85" />
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="10%" y="15%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-blocos" />
+        <g class="icon" id="icon-blocos">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/puzzle.png" height="100" width="100" x="100" y="10" />
+          <a id="link-blocos" xlink:href="blocos.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-blocos" />
+            <text x="150" y="135">Blocos</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="16%" y="45%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-labirinto" />
+        <g class="icon" id="icon-labirinto">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/maze.png" height="100" width="100" x="100" y="10" />
+          <a id="link-labirinto" xlink:href="labirinto.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-labirinto" />
+            <text x="150" y="135">Labirinto</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="26%" y="69%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-drone" />
+        <g class="icon" id="icon-drone">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/bird.png" height="100" width="100" x="100" y="10" />
+          <a id="link-drone" xlink:href="drone.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-drone" />
+            <text x="150" y="135">Drone</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="41%" y="80%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-geobot" />
+        <g class="icon" id="icon-geobot">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/turtle.png" height="100" width="100" x="100" y="10" />
+          <a id="link-geobot" xlink:href="geobot.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-geobot" />
+            <text x="150" y="135">GeoBot</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="55%" y="61%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-dancebot" />
+        <g class="icon" id="icon-dancebot">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/movie.png" height="100" width="100" x="100" y="10" />
+          <a id="link-dancebot" xlink:href="dancebot.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-dancebot" />
+            <text x="150" y="135">DanceBot</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="69%" y="43%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-djbot" />
+        <g class="icon" id="icon-djbot">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/music.png" height="100" width="100" x="100" y="10" />
+          <a id="link-djbot" xlink:href="djbot.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-djbot" />
+            <text x="150" y="135">DJBot</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="83%" y="55%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-treinamento" />
+        <g class="icon" id="icon-treinamento">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/pond-tutor.png" height="100" width="100" x="100" y="10" />
+          <a id="link-treinamento" xlink:href="treinamento.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-treinamento" />
+            <text x="150" y="135">Treinamento</text>
+          </a>
+        </g>
+      </svg>
+      <svg height="150" width="300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="90%" y="85%">
+        <path d="M 111.11,98.89 A 55 55 0 1 1 188.89,98.89" class="gaugeBack" id="back-torneio" />
+        <g class="icon" id="icon-torneio">
+          <circle cx="150" cy="60" r="50" class="iconBack" />
+           <image xlink:href="index/pond-duck.png" height="100" width="100" x="100" y="10" />
+          <a id="link-torneio" xlink:href="torneio.html?lang=pt-br">
+            <circle cx="150" cy="60" r="50" class="iconBorder" />
+            <path class="gaugeFront" id="gauge-torneio" />
+            <text x="150" y="135">Torneio</text>
+          </a>
+        </g>
+      </svg>
+    </g>
+  </svg>
+</body>
+</html>
