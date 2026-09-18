@@ -12,7 +12,7 @@ Este projeto é um protótipo educacional de mestrado, com foco em viabilidade, 
 | Estrutura | HTML5 |
 | Estilização | CSS3 |
 | Lógica | JavaScript (ES6+) |
-| Backend | Nenhum (projeto 100% estático) |
+| Backend | Nenhum (projeto 100% estático) — previsto para o futuro |
 
 ## Cenas do Tour
 
@@ -74,4 +74,4 @@ Estudantes do Ensino Fundamental II e Ensino Médio, especialmente em contextos 
 
 ## Licença
 
-Projeto educacional sem fins comerciais.
+Distribuído sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
