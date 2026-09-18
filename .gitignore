@@ -6,3 +6,21 @@
 # Arquivos do sistema operacional
 .DS_Store
 Thumbs.db
+
+# Fontes de design (arquivos grandes)
+*.psd
+
+# Pacotes e arquivos compactados
+*.zip
+
+# Duplicatas locais
+* - Copia.*
+* - Copia (*).*
+
+# Dependências
+node_modules/
+
+# Editores
+.vscode/
+.idea/
+*.log
