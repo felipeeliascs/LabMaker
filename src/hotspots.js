@@ -1,6 +1,12 @@
 // Gerencia a criação e remoção de hotspots de navegação e recurso
 var hotspotEntities = [];
 
+// Hotspots das atividades da Trilha de Aprendizagem (jogoId -> entidade)
+var gameHotspotEntities = {};
+
+// Entidade atualmente destacada pela Trilha de Aprendizagem
+var hotspotDestacado = null;
+
 // Constantes para labels dos hotspots (facilita ajustes futuros)
 var LABEL_LARGURA_CANVAS = 512;
 var LABEL_ALTURA_CANVAS = 192;
@@ -78,6 +84,8 @@ function limparHotspots() {
     }
   });
   hotspotEntities = [];
+  gameHotspotEntities = {};
+  hotspotDestacado = null;
 }
 
 function criarHotspotsNavegacao(cena, aoClicar) {
@@ -221,5 +229,117 @@ function criarHotspotsRecurso(cena, aoAbrir) {
 
     document.querySelector('#hotspotRoot').appendChild(el);
     hotspotEntities.push(el);
+  });
+}
+
+// Tamanho de canvas para rótulos de duas linhas (nome do jogo + sinalização)
+var LABEL_JOGO_LARGURA = 512;
+var LABEL_JOGO_ALTURA = 256;
+
+// Cria os hotspots das atividades da Trilha presentes na cena.
+// Todos ficam disponíveis desde o início (sem bloqueios).
+function criarHotspotsJogo(cena, aoAbrirAtividade) {
+  if (typeof getAtividadesDaCena !== 'function') return;
+
+  var atividades = getAtividadesDaCena(cena.id);
+  if (!atividades || atividades.length === 0) return;
+
+  atividades.forEach(function (atividade) {
+    var el = document.createElement('a-entity');
+    var transform = converterYawPitchParaTransform(atividade.view);
+    el.setAttribute('position', transform.position);
+    el.setAttribute('rotation', transform.rotation);
+    el.setAttribute('class', 'clickable');
+    el.setAttribute('data-atividade-id', atividade.jogoId);
+
+    // Círculo 2D verde (atividade da trilha)
+    var circle = document.createElement('a-entity');
+    circle.setAttribute('geometry', { primitive: 'circle', radius: 0.20 });
+    circle.setAttribute('material', { color: '#4CAF50', side: 'double', shader: 'flat', opacity: 0.85, transparent: true });
+    circle.setAttribute('class', 'interativo');
+    el.appendChild(circle);
+
+    // Anel externo verde
+    var ring = document.createElement('a-entity');
+    ring.setAttribute('geometry', { primitive: 'ring', radiusInner: 0.22, radiusOuter: 0.26 });
+    ring.setAttribute('material', { color: '#4CAF50', side: 'double', shader: 'flat', opacity: 0.6, transparent: true });
+    ring.setAttribute('position', { x: 0, y: 0, z: 0.002 });
+    el.appendChild(ring);
+
+    // Anel de destaque (oculto até a atividade ser destacada pela trilha)
+    var destaque = document.createElement('a-entity');
+    destaque.setAttribute('geometry', { primitive: 'ring', radiusInner: 0.28, radiusOuter: 0.34 });
+    destaque.setAttribute('material', { color: '#FFEB3B', side: 'double', shader: 'flat', opacity: 0.95, transparent: true });
+    destaque.setAttribute('position', { x: 0, y: 0, z: 0.003 });
+    destaque.setAttribute('visible', false);
+    destaque.setAttribute('class', 'destaque-atividade');
+    el.appendChild(destaque);
+
+    // Ícone de "play" 2D (triângulo branco)
+    var play = document.createElement('a-entity');
+    play.setAttribute('geometry', { primitive: 'triangle', vertexA: '0 0.05 0', vertexB: '-0.05 -0.05 0', vertexC: '0.05 -0.05 0' });
+    play.setAttribute('material', { color: 'white', shader: 'flat', side: 'double' });
+    play.setAttribute('position', { x: 0, y: 0, z: 0.05 });
+    el.appendChild(play);
+
+    // Placa de fundo do rótulo (legibilidade)
+    var fundo = document.createElement('a-entity');
+    fundo.setAttribute('geometry', { primitive: 'plane', width: 1.5, height: 0.5 });
+    fundo.setAttribute('material', { color: '#10321A', shader: 'flat', side: 'double', opacity: 0.65, transparent: true });
+    fundo.setAttribute('position', { x: 0, y: -0.45, z: -0.001 });
+    el.appendChild(fundo);
+
+    // Sinalização textual: nome do jogo + posição na trilha
+    var textoLabel = atividade.titulo + '\nTrilha ' + atividade.ordem + '/' + getTotalEtapas();
+    var texturaLabel = criarTexturaLabel(textoLabel, { largura: LABEL_JOGO_LARGURA, altura: LABEL_JOGO_ALTURA });
+    var label = document.createElement('a-image');
+    label.setAttribute('src', texturaLabel);
+    label.setAttribute('width', 1.6);
+    label.setAttribute('height', 0.8);
+    label.setAttribute('position', { x: 0, y: -0.45, z: 0.004 });
+    el.appendChild(label);
+
+    el.addEventListener('click', function () { aoAbrirAtividade(atividade); });
+
+    document.querySelector('#hotspotRoot').appendChild(el);
+    hotspotEntities.push(el);
+    gameHotspotEntities[atividade.jogoId] = el;
+  });
+}
+
+// Remove o destaque visual de qualquer hotspot de atividade
+function limparDestaqueHotspots() {
+  var destaques = document.querySelectorAll('.destaque-atividade');
+  for (var i = 0; i < destaques.length; i++) {
+    destaques[i].setAttribute('visible', false);
+  }
+  if (hotspotDestacado) {
+    hotspotDestacado.removeAttribute('animation');
+    hotspotDestacado.setAttribute('scale', '1 1 1');
+    hotspotDestacado = null;
+  }
+}
+
+// Destaca visualmente o hotspot da atividade indicada (pulsação + anel amarelo)
+function destacarHotspotJogo(jogoId) {
+  limparDestaqueHotspots();
+
+  var el = gameHotspotEntities[jogoId];
+  if (!el) return;
+
+  hotspotDestacado = el;
+
+  var destaque = el.querySelector('.destaque-atividade');
+  if (destaque) {
+    destaque.setAttribute('visible', true);
+  }
+
+  el.setAttribute('animation', {
+    property: 'scale',
+    to: '1.35 1.35 1.35',
+    dir: 'alternate',
+    dur: 700,
+    loop: true,
+    easing: 'easeInOutSine'
   });
 }

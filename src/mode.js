@@ -43,6 +43,14 @@ function setModeTela() {
   if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
     window.labmakerVRPanel.fechar();
   }
+
+  // Em tela, a Trilha é acessada pelo botão HTML (remover botão espacial)
+  if (typeof removerBotaoTrilhaVR === 'function') {
+    removerBotaoTrilhaVR();
+  }
+  if (window.labmakerMode) {
+    window.labmakerMode.refreshInterativos();
+  }
 }
 
 function setModeVR() {
@@ -62,6 +70,11 @@ function setModeVR() {
   // Fechar painel espacial se estiver aberto
   if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
     window.labmakerVRPanel.fechar();
+  }
+
+  // No VR, disponibilizar botão espacial da Trilha
+  if (typeof criarBotaoTrilhaVR === 'function') {
+    criarBotaoTrilhaVR();
   }
   
   // Atualizar raycasters para garantir detecção dos hotspots

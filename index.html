@@ -43,11 +43,12 @@
     <p id="descricaoCena"></p>
   </div>
 
-  <button id="btnPercurso">Percurso</button>
+  <button id="btnPercurso">Trilha de Aprendizagem</button>
 
   <div id="painelPercurso">
     <div id="percursoConteudo">
-      <h3 id="percursoTitulo"></h3>
+      <h3 id="percursoTitulo">Trilha de Aprendizagem</h3>
+      <h4 id="percursoAtividade"></h4>
       <p id="percursoDescricao"></p>
       <p id="percursoProgresso"></p>
       <div id="percursoBotoes">
@@ -56,6 +57,15 @@
       </div>
       <button id="btnFecharPercurso">Fechar</button>
     </div>
+  </div>
+
+  <!-- Painel de atividade: mantém o jogo Blockly dentro do ambiente LabMaker -->
+  <div id="painelJogo" aria-hidden="true">
+    <div id="jogoCabecalho">
+      <span id="jogoTitulo"></span>
+      <button id="btnFecharJogo">Fechar</button>
+    </div>
+    <iframe id="gameFrame" title="Atividade Blockly" src="about:blank"></iframe>
   </div>
 
   <script src="src/scenes.js"></script>

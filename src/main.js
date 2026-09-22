@@ -40,14 +40,150 @@ function carregarCena(id) {
     abrirRecurso(titulo, descricao);
   });
 
+  // Hotspots das atividades da Trilha de Aprendizagem (jogos Blockly)
+  criarHotspotsJogo(cena, function (atividade) {
+    abrirAtividadeJogo(atividade);
+  });
+
   window.labmakerTags.criarTags(cena, {
     navigate: function (destino) { carregarCena(destino); },
     abrirRecurso: function (titulo, descricao) { abrirRecurso(titulo, descricao); }
   });
 
+  // No VR, disponibiliza um botão espacial para abrir a Trilha
+  if (window.labmakerMode && window.labmakerMode.isVR()) {
+    criarBotaoTrilhaVR();
+  }
+
   if (window.labmakerMode) {
     window.labmakerMode.refreshInterativos();
   }
+}
+
+// Abre o jogo da atividade embutido num painel (iframe), mantendo o aluno
+// dentro do ambiente LabMaker. Os jogos Blockly abrem em modo tela (exigem
+// arrastar blocos) e por isso o VR é encerrado.
+function abrirAtividadeJogo(atividade) {
+  if (!atividade) return;
+
+  fecharPainelPercurso();
+  fecharRecurso();
+  if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
+    window.labmakerVRPanel.fechar();
+  }
+
+  var painel = document.getElementById('painelJogo');
+  var frame = document.getElementById('gameFrame');
+  if (!painel || !frame) {
+    window.open(atividade.url, '_blank');
+    return;
+  }
+
+  var tituloEl = document.getElementById('jogoTitulo');
+  if (tituloEl) tituloEl.textContent = atividade.titulo || 'Atividade';
+
+  frame.src = atividade.url;
+  painel.style.display = 'flex';
+  painel.setAttribute('aria-hidden', 'false');
+
+  // Garante o modo tela (jogos exigem arrastar blocos)
+  var scene = document.getElementById('mainScene');
+  if (window.labmakerMode && window.labmakerMode.isVR() && scene &&
+      typeof scene.exitVR === 'function') {
+    scene.exitVR();
+  }
+
+  // Pausa a renderização 3D enquanto o jogo está aberto (baixo consumo)
+  if (scene && typeof scene.pause === 'function') {
+    scene.pause();
+  }
+}
+
+// Fecha o painel do jogo e libera os recursos
+function fecharJogo() {
+  var painel = document.getElementById('painelJogo');
+  var frame = document.getElementById('gameFrame');
+
+  if (painel) {
+    painel.style.display = 'none';
+    painel.setAttribute('aria-hidden', 'true');
+  }
+  if (frame) {
+    frame.src = 'about:blank';
+  }
+
+  var scene = document.getElementById('mainScene');
+  if (scene && typeof scene.play === 'function') {
+    scene.play();
+  }
+  if (window.labmakerMode) {
+    window.labmakerMode.refreshInterativos();
+  }
+}
+
+// Leva o aluno ao cenário da atividade e destaca o hotspot correspondente.
+// Não altera o progresso nem bloqueia nada: serve apenas como recomendação.
+function navegarParaAtividade(index, reabrirVR) {
+  irParaEtapa(index);
+
+  var atividade = getEtapaAtual();
+  if (!atividade) return;
+
+  if (cenaAtual !== atividade.cena) {
+    carregarCena(atividade.cena);
+  }
+
+  destacarHotspotJogo(atividade.jogoId);
+
+  if (reabrirVR && window.labmakerMode && window.labmakerMode.isVR() &&
+      window.labmakerVRPanel) {
+    window.labmakerVRPanel.abrirTrilha();
+  }
+}
+
+// Botão espacial (VR) para abrir a Trilha de Aprendizagem.
+// Só é criado no modo VR; em tela, o botão HTML é usado.
+function criarBotaoTrilhaVR() {
+  if (!(window.labmakerMode && window.labmakerMode.isVR())) return;
+  if (document.getElementById('trilhaMenuBtn')) return;
+
+  var root = document.querySelector('#hotspotRoot');
+  if (!root) return;
+
+  var el = document.createElement('a-entity');
+  el.setAttribute('id', 'trilhaMenuBtn');
+  var transform = converterYawPitchParaTransform({ yaw: 0, pitch: -22 });
+  el.setAttribute('position', transform.position);
+  el.setAttribute('rotation', transform.rotation);
+  el.setAttribute('class', 'clickable');
+
+  var circle = document.createElement('a-entity');
+  circle.setAttribute('geometry', { primitive: 'circle', radius: 0.18 });
+  circle.setAttribute('material', { color: '#4CAF50', side: 'double', shader: 'flat', opacity: 0.95, transparent: true });
+  circle.setAttribute('class', 'interativo');
+  circle.setAttribute('position', { x: 0, y: 0, z: 0.004 });
+  el.appendChild(circle);
+
+  var textura = criarTexturaLabel('Trilha de Aprendizagem', { largura: 512, altura: 128 });
+  var label = document.createElement('a-image');
+  label.setAttribute('src', textura);
+  label.setAttribute('width', 1.4);
+  label.setAttribute('height', 0.35);
+  label.setAttribute('position', { x: 0, y: -0.3, z: 0.005 });
+  el.appendChild(label);
+
+  el.addEventListener('click', function () { abrirPainelPercurso(); });
+
+  root.appendChild(el);
+  hotspotEntities.push(el);
+}
+
+function removerBotaoTrilhaVR() {
+  var el = document.getElementById('trilhaMenuBtn');
+  if (!el) return;
+  if (el.parentNode) el.parentNode.removeChild(el);
+  var idx = hotspotEntities.indexOf(el);
+  if (idx >= 0) hotspotEntities.splice(idx, 1);
 }
 
 // Conecta eventos dos botões
@@ -65,13 +201,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   document.getElementById('btnAnterior').addEventListener('click', function () {
-    etapaAnterior();
-    atualizarPainelPercurso();
+    window.labmakerTrilha.anterior();
   });
 
   document.getElementById('btnProxima').addEventListener('click', function () {
-    proximaEtapa();
-    atualizarPainelPercurso();
+    window.labmakerTrilha.proxima();
+  });
+
+  document.getElementById('btnFecharJogo').addEventListener('click', function () {
+    fecharJogo();
+  });
+
+  // Esc fecha o painel do jogo
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      var painel = document.getElementById('painelJogo');
+      if (painel && painel.style.display === 'flex') {
+        fecharJogo();
+      }
+    }
   });
 
   carregarCena('antesala');

@@ -77,12 +77,22 @@ function fecharRecurso() {
   }
 }
 
-// Controle do painel de percurso pedagógico
+// Controle do painel "Trilha de Aprendizagem"
+// A trilha é apenas uma recomendação: nenhuma atividade é bloqueada.
+function estaEmVR() {
+  return !!(window.labmakerMode && window.labmakerMode.isVR());
+}
+
 function abrirPainelPercurso() {
   fecharRecurso();
-  irParaEtapa(0);
+
+  // Não reinicia a navegação: retorna à atividade que o aluno estava vendo.
   atualizarPainelPercurso();
-  document.getElementById('painelPercurso').style.display = 'block';
+
+  // No modo tela o painel HTML é exibido; no VR o painel espacial é usado.
+  if (!estaEmVR()) {
+    document.getElementById('painelPercurso').style.display = 'block';
+  }
 }
 
 function fecharPainelPercurso() {
@@ -90,17 +100,41 @@ function fecharPainelPercurso() {
   if (painel) {
     painel.style.display = 'none';
   }
+  if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
+    window.labmakerVRPanel.fechar();
+  }
 }
 
 function atualizarPainelPercurso() {
-  var etapa = getEtapaAtual();
+  var atividade = getEtapaAtual();
   var indice = getIndiceAtual();
   var total = getTotalEtapas();
 
-  document.getElementById('percursoTitulo').textContent = etapa.titulo;
-  document.getElementById('percursoDescricao').textContent = etapa.descricao;
-  document.getElementById('percursoProgresso').textContent = 'Etapa ' + (indice + 1) + ' de ' + total;
+  var elAtividade = document.getElementById('percursoAtividade');
+  if (elAtividade) elAtividade.textContent = atividade.titulo;
+  document.getElementById('percursoDescricao').textContent = atividade.missao;
+  document.getElementById('percursoProgresso').textContent = 'Atividade ' + (indice + 1) + ' de ' + total;
 
   document.getElementById('btnAnterior').disabled = (indice === 0);
   document.getElementById('btnProxima').disabled = (indice === total - 1);
+
+  // Leva o aluno ao cenário da atividade e destaca o hotspot correspondente.
+  if (typeof navegarParaAtividade === 'function') {
+    navegarParaAtividade(indice, estaEmVR());
+  }
 }
+
+// Controles compartilhados entre o painel HTML (tela) e o painel VR
+window.labmakerTrilha = {
+  proxima: function () {
+    proximaEtapa();
+    atualizarPainelPercurso();
+  },
+  anterior: function () {
+    etapaAnterior();
+    atualizarPainelPercurso();
+  },
+  abrir: function () {
+    abrirPainelPercurso();
+  }
+};
