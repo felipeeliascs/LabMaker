@@ -4,6 +4,25 @@ var sky = document.getElementById('mainSky');
 var nomeCena = document.getElementById('nomeCena');
 var descricaoCena = document.getElementById('descricaoCena');
 
+// O look-controls do A-Frame 1.6.0 limita o arrasto de toque ao eixo Y (yaw),
+// impossibilitando olhar para cima/para baixo no celular. Este patch estende o
+// onTouchMove para também rotacionar o pitch (eixo X), mantendo o clique de
+// mouse no desktop e o raycasting intactos.
+if (AFRAME && AFRAME.components && AFRAME.components['look-controls']) {
+  var _lookProto = AFRAME.components['look-controls'].Component.prototype;
+  _lookProto.onTouchMove = function (evt) {
+    if (!this.touchStarted || !this.data.touchEnabled) return;
+    var canvas = this.el.sceneEl.canvas;
+    var dx = evt.touches[0].pageX - this.touchStart.x;
+    var dy = evt.touches[0].pageY - this.touchStart.y;
+    var dir = this.data.reverseTouchDrag ? 1 : -1;
+    this.yawObject.rotation.y -= 2 * Math.PI * dx / canvas.clientWidth * 0.5 * dir;
+    this.pitchObject.rotation.x += 2 * Math.PI * dy / canvas.clientHeight * 0.5 * dir;
+    this.pitchObject.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.pitchObject.rotation.x));
+    this.touchStart = { x: evt.touches[0].pageX, y: evt.touches[0].pageY };
+  };
+}
+
 function buscarCena(id) {
   for (var i = 0; i < labmakerScenes.length; i++) {
     if (labmakerScenes[i].id === id) {
