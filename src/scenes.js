@@ -97,6 +97,25 @@ const labmakerScenes = [
         descricao: 'Processo de fabricação por adição usado para transformar modelos digitais em objetos físicos.',
         view: { yaw: 16.70, pitch: -12.33 }
       }
+    ],
+    simulatorHotspots: [
+      {
+        id: 'simulador-impressao-3d',
+        titulo: 'Simulador de Impressão 3D',
+        label: 'Simulador 3D',
+        descricao: 'Simulador de impressora FDM: carregue um modelo STL, analise a peça e acompanhe a impressão camada por camada.',
+        url: 'simulaores/3d/dist/index.html',
+        view: { yaw: 8, pitch: -6 }
+      },
+      {
+        // Recurso opcional, fora das oito etapas da Trilha de Aprendizagem
+        id: 'simulador-gravacao-laser',
+        titulo: 'Simulador de Gravação a Laser',
+        label: 'Recurso opcional',
+        missao: 'Planeje o percurso, ajuste a potência e a velocidade e observe como um desenho digital pode ser gravado em uma placa de MDF virtual.',
+        url: 'simulaores/cnc-laser/index.html',
+        view: { yaw: -16, pitch: -8 }
+      }
     ]
   },
   {

@@ -45,6 +45,11 @@ function carregarCena(id) {
     abrirAtividadeJogo(atividade);
   });
 
+  // Hotspots de simuladores (recursos extras, fora da trilha)
+  criarHotspotsSimulador(cena, function (simulador) {
+    abrirAtividadeJogo(simulador);
+  });
+
   window.labmakerTags.criarTags(cena, {
     navigate: function (destino) { carregarCena(destino); },
     abrirRecurso: function (titulo, descricao) { abrirRecurso(titulo, descricao); }
@@ -60,15 +65,24 @@ function carregarCena(id) {
   }
 }
 
-// Abre o jogo da atividade embutido num painel (iframe), mantendo o aluno
-// dentro do ambiente LabMaker. Os jogos Blockly abrem em modo tela (exigem
-// arrastar blocos) e por isso o VR é encerrado.
+// Abre a atividade (jogo Blockly ou simulador) embutida num painel (iframe),
+// mantendo o aluno dentro do ambiente LabMaker. Essas atividades abrem em
+// modo tela (exigem arrastar blocos, controles deslizantes e botões), então
+// o VR é encerrado.
 function abrirAtividadeJogo(atividade) {
   if (!atividade) return;
 
   fecharPainelPercurso();
   fecharRecurso();
-  if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
+
+  var estavaEmVR = !!(window.labmakerMode && window.labmakerMode.isVR());
+
+  // Em VR, informar que a atividade abre em modo tela
+  if (estavaEmVR && window.labmakerVRPanel) {
+    var avisoVR = 'Esta atividade abre em modo tela, pois exige controles deslizantes e botões.';
+    var descVR = atividade.missao ? atividade.missao + '\n\n' + avisoVR : avisoVR;
+    window.labmakerVRPanel.abrir(atividade.titulo || 'Atividade', descVR);
+  } else if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {
     window.labmakerVRPanel.fechar();
   }
 
@@ -82,18 +96,27 @@ function abrirAtividadeJogo(atividade) {
   var tituloEl = document.getElementById('jogoTitulo');
   if (tituloEl) tituloEl.textContent = atividade.titulo || 'Atividade';
 
+  var missaoEl = document.getElementById('jogoMissao');
+  if (missaoEl) missaoEl.textContent = atividade.missao || '';
+
+  var modoEl = document.getElementById('jogoModo');
+  if (modoEl) {
+    modoEl.textContent = estavaEmVR
+      ? 'Abre em modo tela — use os controles deslizantes e botões.'
+      : '';
+  }
+
   frame.src = atividade.url;
   painel.style.display = 'flex';
   painel.setAttribute('aria-hidden', 'false');
 
-  // Garante o modo tela (jogos exigem arrastar blocos)
+  // Garante o modo tela (jogos/simuladores exigem mouse)
   var scene = document.getElementById('mainScene');
-  if (window.labmakerMode && window.labmakerMode.isVR() && scene &&
-      typeof scene.exitVR === 'function') {
+  if (estavaEmVR && scene && typeof scene.exitVR === 'function') {
     scene.exitVR();
   }
 
-  // Pausa a renderização 3D enquanto o jogo está aberto (baixo consumo)
+  // Pausa a renderização 3D enquanto a atividade está aberta (baixo consumo)
   if (scene && typeof scene.pause === 'function') {
     scene.pause();
   }

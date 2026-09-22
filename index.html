@@ -62,10 +62,14 @@
   <!-- Painel de atividade: mantém o jogo Blockly dentro do ambiente LabMaker -->
   <div id="painelJogo" aria-hidden="true">
     <div id="jogoCabecalho">
-      <span id="jogoTitulo"></span>
+      <div id="jogoInfo">
+        <span id="jogoTitulo"></span>
+        <span id="jogoMissao"></span>
+        <span id="jogoModo"></span>
+      </div>
       <button id="btnFecharJogo">Fechar</button>
     </div>
-    <iframe id="gameFrame" title="Atividade Blockly" src="about:blank"></iframe>
+    <iframe id="gameFrame" title="Atividade LabMaker" src="about:blank"></iframe>
   </div>
 
   <script src="src/scenes.js"></script>

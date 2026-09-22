@@ -227,16 +227,45 @@ body {
 
 #jogoCabecalho {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
   flex: 0 0 auto;
+}
+
+#jogoInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 #jogoTitulo {
   color: #FF9800;
   font-size: 18px;
   font-weight: bold;
+}
+
+#jogoMissao {
+  color: #d0d4d8;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 2px;
+  max-width: 70vw;
+}
+
+#jogoMissao:empty {
+  display: none;
+}
+
+#jogoModo {
+  color: #FFEB3B;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+#jogoModo:empty {
+  display: none;
 }
 
 #gameFrame {
