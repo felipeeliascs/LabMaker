@@ -1,0 +1,20 @@
+.panel {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--sim-text);
+  border-bottom: 1px solid var(--sim-border);
+}
+.heading { font-size: 14px; font-weight: 600; color: var(--sim-accent); }
+.status { font-size: 11px; color: var(--sim-muted); text-align: right; max-width: 96px; }
+.panel p { line-height: 1.5; }
+.panel button { padding: 6px 10px; min-height: 32px; cursor: pointer; }
+.panel button:disabled { cursor: not-allowed; }
+.panel input[type='file'] { margin-top: 6px; max-width: 100%; }
+.panel input[type='file']::file-selector-button { padding: 6px; margin-right: 6px; background: var(--sim-accent); color: #1a1208; border: 0; border-radius: 4px; cursor: pointer; }
+.panel input[type='checkbox'] { accent-color: var(--sim-accent); }
+.panel select { padding: 5px; }
+.panel svg { margin-top: 8px; }
+.error { padding: 8px; border-radius: 4px; background: #352024; color: #ff9292; font-size: 12px; }
+.preview { padding: 10px; background: var(--sim-bg); border: 1px solid var(--sim-border); border-radius: 5px; }
