@@ -44,8 +44,6 @@ function carregarCena(id) {
   }
 
   cenaAtual = id;
-  sky.setAttribute('src', cena.panorama);
-  sky.setAttribute('rotation', cena.initialRotation || '0 -90 0');
   nomeCena.textContent = cena.name;
   descricaoCena.textContent = cena.description;
 
@@ -82,6 +80,57 @@ function carregarCena(id) {
   if (window.labmakerMode) {
     window.labmakerMode.refreshInterativos();
   }
+
+  preCarregarDestinos(cena);
+  aplicarPanorama(cena);
+}
+
+// Pré-carrega os panoramas das cenas alcançáveis pela navegação para que a
+// troca de cena seja imediata (o download já começa durante a exploração).
+function preCarregarDestinos(cena) {
+  var destinos = (cena.navigationHotspots || []).map(function (h) {
+    return buscarCena(h.target);
+  });
+  for (var i = 0; i < destinos.length; i++) {
+    if (!destinos[i]) { continue; }
+    var img = new Image();
+    img.src = destinos[i].panorama;
+  }
+}
+
+// Aplica o panorama da cena após o carregamento da imagem e exibe a tela de
+// carregamento enquanto ela não estiver pronta.
+function aplicarPanorama(cena) {
+  var tela = document.getElementById('telaCarregamento');
+  var img = new Image();
+
+  function concluir() {
+    if (cenaAtual !== cena.id) { return; }
+    sky.setAttribute('src', cena.panorama);
+    sky.setAttribute('rotation', cena.initialRotation || '0 -90 0');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        ocultarTelaDeCarregamento(tela);
+      });
+    });
+  }
+
+  mostrarTelaDeCarregamento(tela);
+  img.onload = concluir;
+  img.onerror = concluir;
+  img.src = cena.panorama;
+}
+
+function mostrarTelaDeCarregamento(tela) {
+  if (!tela) return;
+  tela.classList.add('visivel');
+  tela.setAttribute('aria-hidden', 'false');
+}
+
+function ocultarTelaDeCarregamento(tela) {
+  if (!tela) return;
+  tela.classList.remove('visivel');
+  tela.setAttribute('aria-hidden', 'true');
 }
 
 // Abre a atividade (jogo Blockly ou simulador) embutida num painel (iframe),

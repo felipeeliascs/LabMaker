@@ -8,11 +8,12 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <a-scene
-    id="mainScene"
-    cursor="rayOrigin: mouse; fuse: false"
-    raycaster="objects: .interativo; enabled: true">
-    <a-sky id="mainSky" src="assets/panoramas/01-antesala-recepcao.png"></a-sky>
+<a-scene
+      id="mainScene"
+      loading-screen="enabled: false"
+      cursor="rayOrigin: mouse; fuse: false"
+      raycaster="objects: .interativo; enabled: true">
+    <a-sky id="mainSky" src="assets/panoramas/01-antesala-recepcao.jpg"></a-sky>
     <a-camera>
       <a-cursor
         id="vrCursor"
@@ -70,6 +71,12 @@
       <button id="btnFecharJogo">Fechar</button>
     </div>
     <iframe id="gameFrame" title="Atividade LabMaker" src="about:blank"></iframe>
+  </div>
+
+  <!-- Tela de carregamento: exibida enquanto o panorama da cena é carregado -->
+  <div id="telaCarregamento" class="tela-carregamento" aria-hidden="true">
+    <div class="carregando-spinner"></div>
+    <p class="carregando-texto">Carregando cena...</p>
   </div>
 
   <script src="src/scenes.js"></script>

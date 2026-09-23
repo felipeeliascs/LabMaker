@@ -1,6 +1,8 @@
 // LabelTag: texto flutuante nativo A-Frame com visualização 3D
 // Funções para criar e limpar tags do tipo 'label'
 
+var LABEL_FONTE_NEGRITO = 'exo2bold';
+
 function criarLabelTag(el, tagData, handlers) {
   el.setAttribute('scale', '1 1 1');
   
@@ -19,6 +21,9 @@ function criarLabelTag(el, tagData, handlers) {
   texto.setAttribute('align', 'center');
   texto.setAttribute('width', '3');
   texto.setAttribute('color', '#ffffff');
+  if (tagData.bold) {
+    texto.setAttribute('font', LABEL_FONTE_NEGRITO);
+  }
   texto.setAttribute('position', '0 0.55 0');
   el.appendChild(texto);
   

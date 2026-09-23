@@ -3,38 +3,17 @@ const labmakerScenes = [
   {
     id: 'antesala',
     name: 'Antesala / Recepção',
-    panorama: 'assets/panoramas/01-antesala-recepcao.png',
+    panorama: 'assets/panoramas/01-antesala-recepcao.jpg',
     description: 'Ambiente de recepção do LabMaker. Ponto de partida do tour pelo laboratório maker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
       { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -23, pitch: -0 } }
-    ],
-    tags: [
-      {
-        id: 'label-boas-vindas',
-        type: 'label',
-        view: { yaw: -45, pitch: -5 },
-        text: 'Bem-vindo ao LabMaker'
-      },
-      {
-        id: 'media-informacoes',
-        type: 'media',
-        view: { yaw: -60, pitch: 0 },
-        content: {
-          title: 'LabMaker',
-          description: 'Ambiente imersivo para práticas de robótica maker e programação visual.',
-          image: 'assets/panoramas/01-antesala-recepcao.png',
-          links: [
-            { label: 'Documentação', url: 'https://github.com/anomalyco/labmaker' }
-          ]
-        }
-      }
     ]
   },
   {
     id: 'hub',
     name: 'Hub Central',
-    panorama: 'assets/panoramas/02-hub-central.png',
+    panorama: 'assets/panoramas/02-hub-central.jpg',
     description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
@@ -48,7 +27,7 @@ const labmakerScenes = [
   {
     id: 'programacao',
     name: 'Programação e Robótica',
-    panorama: 'assets/panoramas/03-programacao-robotica.png',
+    panorama: 'assets/panoramas/03-programacao-robotica.jpg',
     description: 'Estação com computadores, robôs educacionais e kits de programação visual.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
@@ -66,7 +45,7 @@ const labmakerScenes = [
   {
     id: 'eletronica',
     name: 'Eletrônica e Prototipagem',
-    panorama: 'assets/panoramas/04-eletronica-prototipagem.png',
+    panorama: 'assets/panoramas/04-eletronica-prototipagem.jpg',
     description: 'Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
@@ -84,7 +63,7 @@ const labmakerScenes = [
   {
     id: 'fabricacao',
     name: 'Fabricação Digital',
-    panorama: 'assets/panoramas/05-fabricacao-digital.png',
+    panorama: 'assets/panoramas/05-fabricacao-digital.jpg',
     description: 'Espaço com impressoras 3D, cortadora a laser e materiais para fabricação digital.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
@@ -121,7 +100,7 @@ const labmakerScenes = [
   {
     id: 'arena',
     name: 'Arena de Batalha de Robôs',
-    panorama: 'assets/panoramas/06-arena-batalha-robos.png',
+    panorama: 'assets/panoramas/06-arena-batalha-robos.jpg',
     description: 'Arena com robôs controlados por programação para competições e desafios.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
