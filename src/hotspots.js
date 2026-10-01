@@ -139,6 +139,41 @@ var ICONES_ATIVIDADE = {
   torneio: '#hotspotIconTorneio'
 };
 
+// Alguns WebGL móveis perdem a textura SVG ao entrar no VR.
+// O canvas mantém uma fonte de pixels estável para a troca de modo.
+var TEXTURAS_ICONES_HOTSPOT = {};
+function obterTexturaIconeHotspot(iconeSvg) {
+  if (TEXTURAS_ICONES_HOTSPOT[iconeSvg]) return TEXTURAS_ICONES_HOTSPOT[iconeSvg];
+
+  var imagemSvg = document.querySelector(iconeSvg);
+  var assets = document.querySelector('a-assets');
+  if (!imagemSvg || !assets) return iconeSvg;
+
+  var canvas = document.createElement('canvas');
+  canvas.id = imagemSvg.id.replace('hotspotIcon', 'hotspotTexture');
+  canvas.width = 256;
+  canvas.height = 256;
+  assets.appendChild(canvas);
+
+  function desenharIcone() {
+    if (!imagemSvg.naturalWidth) return;
+    var contexto = canvas.getContext('2d');
+    if (!contexto) return;
+    contexto.clearRect(0, 0, canvas.width, canvas.height);
+    contexto.drawImage(imagemSvg, 0, 0, canvas.width, canvas.height);
+    document.querySelectorAll('a-image[src="#' + canvas.id + '"]').forEach(function (icone) {
+      var mesh = icone.getObject3D('mesh');
+      if (mesh && mesh.material.map) mesh.material.map.needsUpdate = true;
+    });
+  }
+
+  if (imagemSvg.complete && imagemSvg.naturalWidth) desenharIcone();
+  else imagemSvg.addEventListener('load', desenharIcone, { once: true });
+
+  TEXTURAS_ICONES_HOTSPOT[iconeSvg] = '#' + canvas.id;
+  return TEXTURAS_ICONES_HOTSPOT[iconeSvg];
+}
+
 function criarIconeHotspot(tipo, iconeId) {
   var grupo = document.createElement('a-entity');
   grupo.setAttribute('position', { x: 0, y: 0, z: 0.05 });
@@ -146,7 +181,7 @@ function criarIconeHotspot(tipo, iconeId) {
   var imagem = document.createElement('a-image');
   var iconePadrao = tipo.icone === 'porta' ? '#hotspotIconPortal' :
     tipo.icone === 'cubo' ? '#hotspotIconSimulador' : '#hotspotIconInfo';
-  imagem.setAttribute('src', iconeId || iconePadrao);
+  imagem.setAttribute('src', obterTexturaIconeHotspot(iconeId || iconePadrao));
   imagem.setAttribute('width', 0.198);
   imagem.setAttribute('height', 0.198);
   imagem.setAttribute('material', { shader: 'flat', transparent: true, side: 'double' });
