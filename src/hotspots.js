@@ -127,102 +127,34 @@ function obterTipoHotspot(dados, tipoPadrao) {
   return TIPOS_HOTSPOT[tipo] || TIPOS_HOTSPOT[tipoPadrao] || TIPOS_HOTSPOT.texto;
 }
 
-function criarParteIcone(grupo, geometria, posicao, rotacao) {
-  var parte = document.createElement('a-entity');
-  parte.setAttribute('geometry', geometria);
-  parte.setAttribute('material', { color: 'white', shader: 'flat', side: 'double' });
-  if (posicao) parte.setAttribute('position', posicao);
-  if (rotacao) parte.setAttribute('rotation', rotacao);
-  grupo.appendChild(parte);
-  return parte;
-}
+// Os desenhos mudam; o círculo, o anel, as cores e os eventos são preservados.
+var ICONES_ATIVIDADE = {
+  blocos: '#hotspotIconBlocos',
+  labirinto: '#hotspotIconLabirinto',
+  drone: '#hotspotIconDrone',
+  geobot: '#hotspotIconGeobot',
+  dancebot: '#hotspotIconDancebot',
+  djbot: '#hotspotIconDjbot',
+  treinamento: '#hotspotIconTreinamento',
+  torneio: '#hotspotIconTorneio'
+};
 
-function criarIconeTexto(grupo, texto, largura, y) {
-  var label = document.createElement('a-text');
-  label.setAttribute('value', texto);
-  label.setAttribute('align', 'center');
-  label.setAttribute('anchor', 'center');
-  label.setAttribute('color', 'white');
-  label.setAttribute('width', largura || 0.28);
-  label.setAttribute('position', { x: 0, y: y || -0.09, z: 0.05 });
-  grupo.appendChild(label);
-}
-
-function criarIconeHotspot(tipo) {
+function criarIconeHotspot(tipo, iconeId) {
   var grupo = document.createElement('a-entity');
   grupo.setAttribute('position', { x: 0, y: 0, z: 0.05 });
 
-  switch (tipo.icone) {
-    case 'porta':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.13 }, { x: -0.06, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.13 }, { x: 0.06, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.13, height: 0.012 }, { x: 0, y: 0.06, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.075, height: 0.11 }, { x: -0.005, y: -0.005, z: 0.002 }, { x: 0, y: 0, z: -8 });
-      criarParteIcone(grupo, { primitive: 'circle', radius: 0.012 }, { x: 0.027, y: -0.01, z: 0.004 });
-      break;
-    case 'livro':
-      criarParteIcone(grupo, { primitive: 'triangle', vertexA: '-0.075 0.055 0', vertexB: '0 0.035 0', vertexC: '0 -0.055 0' }, { x: 0, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'triangle', vertexA: '0.075 0.055 0', vertexB: '0 0.035 0', vertexC: '0 -0.055 0' }, { x: 0, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.11 }, { x: 0, y: -0.01, z: 0.002 });
-      break;
-    case 'galeria':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.11, height: 0.08 }, { x: -0.025, y: 0.02, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.11, height: 0.08 }, { x: 0.025, y: -0.02, z: 0.002 });
-      criarParteIcone(grupo, { primitive: 'triangle', vertexA: '-0.035 -0.025 0', vertexB: '0.055 -0.025 0', vertexC: '0.005 0.035 0' }, { x: 0.025, y: -0.02, z: 0.004 });
-      criarParteIcone(grupo, { primitive: 'circle', radius: 0.013 }, { x: 0.06, y: 0.015, z: 0.004 });
-      break;
-    case 'claquete':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.14, height: 0.075 }, { x: 0, y: -0.018, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.15, height: 0.024 }, { x: 0, y: 0.045, z: 0.002 }, { x: 0, y: 0, z: -8 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.024 }, { x: -0.04, y: 0.045, z: 0.004 }, { x: 0, y: 0, z: 38 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.024 }, { x: 0, y: 0.045, z: 0.004 }, { x: 0, y: 0, z: 38 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.024 }, { x: 0.04, y: 0.045, z: 0.004 }, { x: 0, y: 0, z: 38 });
-      break;
-    case 'painel':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.14, height: 0.012 }, { x: 0, y: 0.055, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.14, height: 0.012 }, { x: 0, y: -0.055, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.12 }, { x: -0.065, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.012, height: 0.12 }, { x: 0.065, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.112, height: 0.01 }, { x: 0.006, y: 0.02, z: 0.002 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.01, height: 0.06 }, { x: -0.02, y: -0.02, z: 0.002 });
-      break;
-    case 'camadas':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.11, height: 0.07 }, { x: -0.025, y: 0.025, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.11, height: 0.07 }, { x: 0, y: 0, z: 0.002 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.11, height: 0.07 }, { x: 0.025, y: -0.025, z: 0.004 });
-      break;
-    case 'etiqueta':
-      criarParteIcone(grupo, { primitive: 'triangle', vertexA: '-0.07 0.05 0', vertexB: '0.02 0.05 0', vertexC: '-0.07 -0.05 0' }, { x: 0, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'triangle', vertexA: '0.02 0.05 0', vertexB: '0.07 0 0', vertexC: '-0.07 -0.05 0' }, { x: 0, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'ring', radiusInner: 0.009, radiusOuter: 0.017 }, { x: 0.005, y: 0.023, z: 0.002 });
-      break;
-    case 'ajuda':
-      criarParteIcone(grupo, { primitive: 'ring', radiusInner: 0.07, radiusOuter: 0.09 }, { x: 0, y: 0, z: 0 });
-      criarIconeTexto(grupo, '?', 0.34);
-      break;
-    case 'grafico':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.025, height: 0.05 }, { x: -0.045, y: -0.025, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.025, height: 0.09 }, { x: 0, y: -0.005, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.025, height: 0.13 }, { x: 0.045, y: 0.015, z: 0 });
-      break;
-    case 'controle':
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.15, height: 0.08 }, { x: 0, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.048, height: 0.014 }, { x: -0.04, y: 0, z: 0.002 });
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.014, height: 0.048 }, { x: -0.04, y: 0, z: 0.003 });
-      criarParteIcone(grupo, { primitive: 'circle', radius: 0.014 }, { x: 0.04, y: 0.018, z: 0.002 });
-      criarParteIcone(grupo, { primitive: 'circle', radius: 0.014 }, { x: 0.065, y: -0.012, z: 0.002 });
-      break;
-    case 'cubo':
-      criarParteIcone(grupo, { primitive: 'box', width: 0.11, height: 0.11, depth: 0.03 }, { x: 0, y: 0, z: 0 });
-      break;
-    default:
-      criarParteIcone(grupo, { primitive: 'plane', width: 0.08, height: 0.03 }, { x: 0.02, y: 0, z: 0 });
-      criarParteIcone(grupo, { primitive: 'cone', radiusBottom: 0.04, radiusTop: 0, height: 0.06 }, { x: 0.07, y: 0, z: 0 }, { x: 0, y: 0, z: -90 });
-  }
+  var imagem = document.createElement('a-image');
+  var iconePadrao = tipo.icone === 'porta' ? '#hotspotIconPortal' :
+    tipo.icone === 'cubo' ? '#hotspotIconSimulador' : '#hotspotIconInfo';
+  imagem.setAttribute('src', iconeId || iconePadrao);
+  imagem.setAttribute('width', 0.198);
+  imagem.setAttribute('height', 0.198);
+  imagem.setAttribute('material', { shader: 'flat', transparent: true, side: 'double' });
+  grupo.appendChild(imagem);
   return grupo;
 }
 
-function criarBaseHotspot(el, tipo, opacidade) {
+function criarBaseHotspot(el, tipo, opacidade, iconeId) {
   el.dataset.hotspotTipo = tipo.chave;
   el.setAttribute('aria-label', tipo.rotulo);
 
@@ -238,7 +170,7 @@ function criarBaseHotspot(el, tipo, opacidade) {
   ring.setAttribute('position', { x: 0, y: 0, z: 0.002 });
   el.appendChild(ring);
 
-  el.appendChild(criarIconeHotspot(tipo));
+  el.appendChild(criarIconeHotspot(tipo, iconeId));
   return circle;
 }
 
@@ -601,7 +533,8 @@ function criarHotspotAtividade(cenaId, item, sinalizacao, aoAbrir, comDestaque) 
   el.setAttribute('class', 'clickable');
   el.setAttribute('data-atividade-id', item.id);
 
-  var circle = criarBaseHotspot(el, tipo, 0.9);
+  var iconeId = comDestaque ? ICONES_ATIVIDADE[item.id] : '#hotspotIconSimulador';
+  var circle = criarBaseHotspot(el, tipo, 0.9, iconeId);
 
   // Anel de destaque (oculto até a atividade ser destacada pela trilha)
   if (comDestaque) {
