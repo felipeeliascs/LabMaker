@@ -44,7 +44,7 @@ function setModeTela() {
     window.labmakerVRPanel.fechar();
   }
 
-  // Em tela, a Trilha é acessada pelo botão HTML (remover botão espacial)
+  // Em tela, o menu é acessado pelo botão HTML (remover botão espacial).
   if (typeof removerBotaoTrilhaVR === 'function') {
     removerBotaoTrilhaVR();
   }
@@ -72,7 +72,7 @@ function setModeVR() {
     window.labmakerVRPanel.fechar();
   }
 
-  // No VR, disponibilizar botão espacial da Trilha
+  // No VR, disponibilizar o botão espacial do menu principal.
   if (typeof criarBotaoTrilhaVR === 'function') {
     criarBotaoTrilhaVR();
   }

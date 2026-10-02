@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LabMaker — Tour 360°</title>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=0.2.0">
 </head>
 <body>
 <a-scene
@@ -41,6 +41,7 @@
   
   <!-- Canvas oculto para renderização do painel VR -->
   <canvas id="vrPanelCanvas" width="1024" height="640" hidden></canvas>
+  <canvas id="vrMainMenuCanvas" width="1024" height="768" hidden></canvas>
 
   <div id="painelRecurso">
     <div id="recursoConteudo">
@@ -57,7 +58,53 @@
     <p id="descricaoCena"></p>
   </div>
 
-  <button id="btnPercurso">Trilha de Aprendizagem</button>
+  <button id="btnMenuPrincipal" type="button" aria-label="Abrir menu principal" aria-controls="menuExtras" aria-expanded="false" title="Menu principal">
+    <span class="menu-hamburguer" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+
+  <div id="menuExtras" hidden>
+    <nav id="menuCenas" aria-label="Menu de cenas">
+      <button type="button" data-scene-id="antesala">Antesala</button>
+      <button type="button" data-scene-id="hub">Hub</button>
+      <button type="button" data-scene-id="programacao">Programação</button>
+      <button type="button" data-scene-id="eletronica">Eletrônica</button>
+      <button type="button" data-scene-id="fabricacao">Fabricação</button>
+      <button type="button" data-scene-id="arena">Arena</button>
+    </nav>
+
+    <div id="menuFerramentas" aria-label="Ferramentas da cena">
+      <div id="zoomControls" class="zoom-controls" role="group" aria-label="Zoom da cena" hidden>
+        <button id="btnZoomIn" type="button" aria-label="Aproximar cena" title="Aproximar">+</button>
+        <button id="btnZoomOut" type="button" aria-label="Afastar cena" title="Afastar">−</button>
+      </div>
+      <button id="btnGiroscopio" class="menu-tool" type="button" aria-label="Ativar giroscópio" aria-pressed="false" title="Ativar giroscópio">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg>
+      </button>
+      <button id="btnAcessibilidade" class="menu-tool" type="button" aria-label="Abrir página de acessibilidade" title="Acessibilidade">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M4 9h16M12 6v7m-5 8 5-8 5 8"/></svg>
+      </button>
+      <span id="menuAviso" role="status" aria-live="polite" hidden></span>
+    </div>
+
+    <aside id="menuAtividades" aria-label="Sequência de atividades">
+      <button id="btnPercurso" type="button" aria-label="Abrir Trilha de Aprendizagem" title="Abrir Trilha de Aprendizagem">Atividades</button>
+      <div class="menu-activity-list">
+        <button type="button" data-activity-index="0">1. Blocos</button>
+        <button type="button" data-activity-index="1">2. Labirinto</button>
+        <button type="button" data-activity-index="2">3. Drone</button>
+        <button type="button" data-activity-index="3">4. GeoBot</button>
+        <button type="button" data-activity-index="4">5. DanceBot</button>
+        <button type="button" data-activity-index="5">6. DjBot</button>
+        <button type="button" data-activity-index="6">7. Treinamento</button>
+        <button type="button" data-activity-index="7">8. Torneio</button>
+      </div>
+    </aside>
+
+    <button id="menuMapa" type="button" aria-label="Mapa 360 dos hotspots — em breve" title="Mapa 360 dos hotspots — em breve" disabled>
+      <span class="menu-map-ring" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+      <span>Mapa 360</span>
+    </button>
+  </div>
 
   <div id="painelPercurso">
     <div id="percursoConteudo">
@@ -83,7 +130,17 @@
       </div>
       <button id="btnFecharJogo">Fechar</button>
     </div>
-    <iframe id="gameFrame" title="Atividade LabMaker" src="about:blank"></iframe>
+    <div id="jogoViewportArea">
+      <div id="jogoViewport">
+        <iframe id="gameFrame" title="Atividade LabMaker" src="about:blank" width="1024" height="560"></iframe>
+      </div>
+      <div id="jogoScrollX" class="game-scrollbar horizontal" role="scrollbar" aria-label="Rolagem horizontal do jogo" aria-controls="jogoViewport" aria-orientation="horizontal" tabindex="0" hidden>
+        <div class="game-scrollbar-thumb"></div>
+      </div>
+      <div id="jogoScrollY" class="game-scrollbar vertical" role="scrollbar" aria-label="Rolagem vertical do jogo" aria-controls="jogoViewport" aria-orientation="vertical" tabindex="0" hidden>
+        <div class="game-scrollbar-thumb"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Tela de carregamento: exibida enquanto o panorama da cena é carregado -->
@@ -100,8 +157,14 @@
   <script src="src/tag-types/label.js"></script>
   <script src="src/tag-types/media.js"></script>
   <script src="src/mode.js?v=0.6.4"></script>
+  <script src="src/zoom.js?v=0.1.0"></script>
+  <script src="src/game-scrollbars.js?v=0.1.0"></script>
+  <script src="src/main-menu.js?v=0.2.0"></script>
+  <script src="src/vr-main-menu.js?v=0.2.0"></script>
+  <script src="src/gyro.js?v=0.1.0"></script>
+  <script src="src/intro-rotation.js?v=0.1.0"></script>
   <script src="src/tags.js"></script>
   <script src="src/dev-mode.js"></script>
-  <script src="src/main.js?v=0.6.4"></script>
+  <script src="src/main.js?v=0.6.5"></script>
 </body>
 </html>

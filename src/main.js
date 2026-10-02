@@ -36,6 +36,7 @@ function carregarCena(id) {
   var cena = buscarCena(id);
   if (!cena) return;
 
+  if (window.labmakerMenuVR) window.labmakerMenuVR.close();
   fecharRecurso();
   
   // Fechar painel espacial se estiver aberto
@@ -72,7 +73,7 @@ function carregarCena(id) {
     abrirRecurso: function (titulo, descricao) { abrirRecurso(titulo, descricao); }
   });
 
-  // No VR, disponibiliza um botão espacial para abrir a Trilha
+  // No VR, disponibiliza o acesso espacial ao menu principal.
   if (window.labmakerMode && window.labmakerMode.isVR()) {
     criarBotaoTrilhaVR();
   }
@@ -133,6 +134,37 @@ function ocultarTelaDeCarregamento(tela) {
   tela.setAttribute('aria-hidden', 'true');
 }
 
+// A-Frame 1.6: pause() suspende comportamentos, mas mantém renderer.render().
+// Suspender também o loop evita duas cenas WebGL ativas durante uma atividade.
+var cenaSuspensaParaAtividade = null;
+function suspenderCenaParaAtividade(scene) {
+  if (!scene || cenaSuspensaParaAtividade) return;
+  var suspensao = { scene: scene, estavaTocando: scene.isPlaying, loopPausado: false };
+  suspensao.pararLoop = function () {
+    if (cenaSuspensaParaAtividade !== suspensao) return;
+    if (scene.pause) scene.pause();
+    if (scene.renderer && scene.renderStarted) {
+      scene.renderer.setAnimationLoop(null);
+      suspensao.loopPausado = true;
+    }
+  };
+  cenaSuspensaParaAtividade = suspensao;
+  scene.addEventListener('renderstart', suspensao.pararLoop);
+  scene.addEventListener('exit-vr', suspensao.pararLoop);
+  suspensao.pararLoop();
+}
+function retomarCenaAposAtividade() {
+  var suspensao = cenaSuspensaParaAtividade;
+  if (!suspensao) return;
+  cenaSuspensaParaAtividade = null;
+  var scene = suspensao.scene;
+  scene.removeEventListener('renderstart', suspensao.pararLoop);
+  scene.removeEventListener('exit-vr', suspensao.pararLoop);
+  if (scene.clock) scene.clock.getDelta();
+  if (suspensao.estavaTocando && scene.play) scene.play();
+  if (suspensao.loopPausado && scene.renderer) scene.renderer.setAnimationLoop(scene.render);
+}
+
 // Abre a atividade (jogo Blockly ou simulador) embutida num painel (iframe),
 // mantendo o aluno dentro do ambiente LabMaker. Essas atividades abrem em
 // modo tela (exigem arrastar blocos, controles deslizantes e botões), então
@@ -184,10 +216,7 @@ function abrirAtividadeJogo(atividade) {
     scene.exitVR();
   }
 
-  // Pausa a renderização 3D enquanto a atividade está aberta (baixo consumo)
-  if (scene && typeof scene.pause === 'function') {
-    scene.pause();
-  }
+  suspenderCenaParaAtividade(scene);
 }
 
 // Fecha o painel do jogo e libera os recursos
@@ -200,13 +229,11 @@ function fecharJogo() {
     painel.setAttribute('aria-hidden', 'true');
   }
   if (frame) {
+    frame.contentWindow?.postMessage({ type: 'labmaker:visibility', visible: false }, window.location.origin);
     frame.src = 'about:blank';
   }
 
-  var scene = document.getElementById('mainScene');
-  if (scene && typeof scene.play === 'function') {
-    scene.play();
-  }
+  retomarCenaAposAtividade();
   if (window.labmakerMode) {
     window.labmakerMode.refreshInterativos();
   }
@@ -232,7 +259,7 @@ function navegarParaAtividade(index, reabrirVR) {
   }
 }
 
-// Botão espacial (VR) para abrir a Trilha de Aprendizagem.
+// Botão espacial (VR) para abrir o menu principal.
 // Só é criado no modo VR; em tela, o botão HTML é usado.
 function criarBotaoTrilhaVR() {
   if (!(window.labmakerMode && window.labmakerMode.isVR())) return;
@@ -250,12 +277,12 @@ function criarBotaoTrilhaVR() {
 
   var circle = document.createElement('a-entity');
   circle.setAttribute('geometry', { primitive: 'circle', radius: 0.18 });
-  circle.setAttribute('material', { color: '#4CAF50', side: 'double', shader: 'flat', opacity: 0.95, transparent: true });
+  circle.setAttribute('material', { color: '#505050', side: 'double', shader: 'flat', opacity: 0.95, transparent: true });
   circle.setAttribute('class', 'interativo');
   circle.setAttribute('position', { x: 0, y: 0, z: 0.004 });
   el.appendChild(circle);
 
-  var textura = criarTexturaLabel('Trilha de Aprendizagem', { largura: 512, altura: 128 });
+  var textura = criarTexturaLabel('Menu principal', { largura: 512, altura: 128 });
   var label = document.createElement('a-image');
   label.setAttribute('src', textura);
   label.setAttribute('width', 1.4);
@@ -263,7 +290,9 @@ function criarBotaoTrilhaVR() {
   label.setAttribute('position', { x: 0, y: -0.3, z: 0.005 });
   el.appendChild(label);
 
-  el.addEventListener('click', function () { abrirPainelPercurso(); });
+  el.addEventListener('click', function () {
+    if (window.labmakerMenuVR) window.labmakerMenuVR.toggle();
+  });
 
   root.appendChild(el);
   hotspotEntities.push(el);
@@ -313,5 +342,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  carregarCena('antesala');
+  var cenaInicial = new URLSearchParams(window.location.search).get('scene');
+  carregarCena(buscarCena(cenaInicial) ? cenaInicial : 'antesala');
 });

@@ -109,23 +109,349 @@ body {
   color: white;
 }
 
-#btnPercurso {
+#btnMenuPrincipal {
   position: fixed;
-  top: 16px;
-  right: 16px;
-  background: #4CAF50;
-  color: white;
+  top: 8px;
+  right: 12px;
+  width: 42px;
+  height: 40px;
+  background: #505050;
+  color: #fff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 12px;
   cursor: pointer;
-  z-index: 15;
-  font-family: Arial, Helvetica, sans-serif;
+  z-index: 19;
+  display: grid;
+  place-items: center;
+}
+
+#btnMenuPrincipal:hover,
+#btnMenuPrincipal[aria-expanded="true"] {
+  background: #3e3e3e;
+}
+
+#btnMenuPrincipal[hidden] {
+  display: none;
+}
+
+.labmaker-dev-mode #btnMenuPrincipal {
+  z-index: 10001;
+}
+
+.labmaker-menu-open #devBar {
+  display: none;
+}
+
+.menu-hamburguer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-hamburguer span {
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: #fff;
+}
+
+#menuExtras[hidden] {
+  display: none;
+}
+
+#menuCenas {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  width: min(540px, calc(100vw - 160px));
+  overflow-x: auto;
+  padding: 3px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background: #505050;
+  z-index: 16;
+}
+
+#menuCenas button {
+  flex: 1 0 82px;
+  min-height: 34px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: #fff;
+  font: bold 12px Arial, Helvetica, sans-serif;
+  opacity: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#menuCenas button:hover,
+#menuCenas button:focus-visible {
+  background: #707070;
+}
+
+#menuCenas button.is-current {
+  background: #d1d1d1;
+  color: #202020;
+}
+
+#menuFerramentas {
+  position: fixed;
+  top: 80px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 16;
+}
+
+.zoom-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.zoom-controls[hidden] {
+  display: none;
+}
+
+.zoom-controls button,
+.menu-tool {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: #505050;
+  color: #fff;
+  font: 26px/1 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.zoom-controls button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.menu-tool[aria-pressed="true"] {
+  background: #2563a6;
+}
+
+.menu-tool:hover,
+.menu-tool:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.menu-tool svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#menuAviso:not([hidden]) {
+  position: absolute;
+  top: 0;
+  left: 48px;
+  width: min(260px, calc(100vw - 80px));
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #202020;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#menuAtividades {
+  position: fixed;
+  top: 100px;
+  right: 12px;
+  width: 160px;
+  max-height: calc(100dvh - 190px);
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: #505050;
+  overflow-y: auto;
+  z-index: 16;
+}
+
+#btnPercurso {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 6px 2px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  font: bold 14px Arial, Helvetica, sans-serif;
+  cursor: pointer;
 }
 
 #btnPercurso:hover {
-  background: #388E3C;
+  background: #3e3e3e;
+}
+
+.menu-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-activity-list button {
+  min-height: 58px;
+  padding: 8px;
+  border: 0;
+  border-radius: 10px;
+  background: #d1d1d1;
+  color: #303030;
+  font: bold 12px Arial, Helvetica, sans-serif;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.menu-activity-list button:hover,
+.menu-activity-list button:focus-visible {
+  background: #fff;
+  outline: 2px solid #303030;
+}
+
+#menuMapa {
+  position: fixed;
+  bottom: 24px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 82px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: bold 11px Arial, Helvetica, sans-serif;
+  opacity: 1;
+  z-index: 16;
+}
+
+.menu-map-ring {
+  position: relative;
+  display: block;
+  width: 68px;
+  height: 68px;
+  border: 3px dashed #d1d1d1;
+  border-radius: 50%;
+  background: rgba(80, 80, 80, 0.3);
+}
+
+.menu-map-ring span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f97316;
+}
+
+.menu-map-ring span:nth-child(1) { top: 0; left: 28px; background: #fb7185; }
+.menu-map-ring span:nth-child(2) { top: 12px; right: 1px; background: #60a5fa; }
+.menu-map-ring span:nth-child(3) { bottom: 8px; right: 4px; background: #f97316; }
+.menu-map-ring span:nth-child(4) { bottom: 0; left: 28px; background: #38bdf8; }
+.menu-map-ring span:nth-child(5) { bottom: 10px; left: 2px; background: #f97316; }
+.menu-map-ring span:nth-child(6) { top: 13px; left: 1px; background: #fb7185; }
+
+@media (max-width: 700px), (pointer: coarse) and (max-width: 1024px) {
+  #menuExtras:not([hidden]) {
+    position: fixed;
+    top: 60px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(312px, calc(100vw - 24px));
+    max-height: min(56dvh, 520px);
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background: rgba(55, 55, 55, 0.96);
+    overflow-y: auto;
+    z-index: 18;
+  }
+
+  #menuCenas,
+  #menuFerramentas,
+  #menuAtividades,
+  #menuMapa {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-height: none;
+  }
+
+  #menuCenas {
+    flex: 0 0 auto;
+    border-radius: 10px;
+    background: #454545;
+  }
+
+  #menuCenas button {
+    flex: 0 0 92px;
+  }
+
+  #menuFerramentas {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #menuAviso:not([hidden]) {
+    position: static;
+    flex: 1 0 100%;
+    width: 100%;
+    max-width: none;
+  }
+
+  .zoom-controls {
+    flex-direction: row;
+  }
+
+  #menuAtividades {
+    flex: 0 0 auto;
+    overflow: visible;
+    background: #454545;
+  }
+
+  .menu-activity-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .menu-activity-list button {
+    min-height: 50px;
+  }
+
+  #menuMapa {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .menu-map-ring {
+    width: 46px;
+    height: 46px;
+  }
+
+  .menu-map-ring span:nth-child(1),
+  .menu-map-ring span:nth-child(4) { left: 18px; }
 }
 
 #painelPercurso {
@@ -215,7 +541,8 @@ body {
   transform: translate(-50%, -50%);
   width: 92vw;
   height: 88vh;
-  max-width: 1280px;
+  height: 88dvh;
+  max-width: 1024px;
   z-index: 30;
   background: rgba(0, 0, 0, 0.92);
   border-radius: 12px;
@@ -268,10 +595,82 @@ body {
   display: none;
 }
 
-#gameFrame {
+#jogoViewportArea {
   flex: 1 1 auto;
-  width: 100%;
+  min-width: 0;
   min-height: 0;
+  width: 100%;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #fff;
+}
+
+#jogoViewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.game-scrollbar {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  #jogoViewportArea {
+    padding-bottom: 14px;
+  }
+
+  #jogoViewportArea.has-vertical-scroll {
+    padding-right: 14px;
+  }
+
+  #jogoViewport {
+    overflow: hidden;
+  }
+
+  .game-scrollbar:not([hidden]) {
+    display: block;
+    position: absolute;
+    background: #d1d5db;
+    border-radius: 7px;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .game-scrollbar.horizontal {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 14px;
+  }
+
+  #jogoViewportArea.has-vertical-scroll .game-scrollbar.horizontal {
+    right: 14px;
+  }
+
+  .game-scrollbar.vertical {
+    top: 0;
+    right: 0;
+    bottom: 14px;
+    width: 14px;
+  }
+
+  .game-scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+    background: #475569;
+  }
+}
+
+#gameFrame {
+  display: block;
+  width: 1024px;
+  height: 560px;
   border: 0;
   border-radius: 8px;
   background: #fff;
