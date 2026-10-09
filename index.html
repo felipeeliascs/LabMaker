@@ -6,6 +6,7 @@
   <title>LabMaker — Tour 360°</title>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <link rel="stylesheet" href="styles/main.css?v=0.2.0">
+  <link rel="stylesheet" href="styles/cardboard.css?v=0.1.2">
 </head>
 <body>
 <a-scene
@@ -23,6 +24,9 @@
       <img id="hotspotIconTreinamento" src="assets/icons/hotspots/swords.svg" alt="">
       <img id="hotspotIconTorneio" src="assets/icons/hotspots/torneio.svg" alt="">
       <img id="hotspotIconPortal" src="assets/icons/hotspots/portal.svg" alt="">
+      <img id="hotspotIconManual" src="assets/icons/hotspots/manual.svg" alt="">
+      <img id="hotspotIconCardboard" src="assets/icons/hotspots/cardboard.svg" alt="">
+      <img id="hotspotIconBussola" src="assets/icons/hotspots/bussola.svg" alt="">
       <img id="hotspotIconInfo" src="assets/icons/hotspots/info.svg" alt="">
       <img id="hotspotIconSimulador" src="assets/icons/hotspots/scan-box.svg" alt="">
     </a-assets>
@@ -67,6 +71,58 @@
       </div>
       <p id="toolPanelStatus" role="status" aria-live="polite"></p>
     </div>
+  </div>
+
+  <div id="cardboardPanel" class="cardboard-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="cardboardTitle" aria-describedby="cardboardIntro">
+    <article class="cardboard-panel">
+      <header class="cardboard-header">
+        <div><span class="cardboard-badge">APRENDER FAZENDO</span><h2 id="cardboardTitle">GOOGLE CARDBOARD</h2></div>
+        <button id="cardboardClose" type="button" aria-label="Fechar painel Google Cardboard">Fechar <span aria-hidden="true">×</span></button>
+      </header>
+      <div id="cardboardScroll" class="cardboard-scroll" tabindex="0" aria-label="Conteúdo sobre Google Cardboard">
+        <section class="cardboard-hero" aria-labelledby="cardboardHeroTitle">
+          <div>
+            <p class="cardboard-eyebrow">UM PEQUENO VISOR. UMA NOVA FORMA DE EXPLORAR.</p>
+            <h3 id="cardboardHeroTitle">Que tal olhar o LabMaker por dentro?</h3>
+            <p id="cardboardIntro">O LabMaker pode ser explorado em <strong>realidade virtual (VR)</strong>. Em dispositivos compatíveis, você olha ao redor dos ambientes e sente como se estivesse dentro do laboratório!</p>
+            <p>O <strong>Google Cardboard</strong> é um visor criado pelo Google que combina uma estrutura de papelão, duas lentes e um celular. As lentes ajudam cada olho a ver uma imagem da tela, criando uma sensação de profundidade.</p>
+            <p>É uma opção de menor custo para conhecer a VR: você pode montar a estrutura com materiais simples, usando lentes apropriadas e um celular compatível.</p>
+          </div>
+          <figure><img src="assets/cardboard/viewer.svg" alt="Ilustração de um visor de papelão com duas lentes e um celular posicionado na horizontal" width="560" height="370"><figcaption>Papelão + lentes + celular = um visor para explorar!</figcaption></figure>
+        </section>
+        <aside class="cardboard-tip"><strong>Antes de começar</strong><p>O Cardboard precisa de duas imagens na tela, uma para cada olho. O uso com o LabMaker depende do suporte VR do celular e do navegador. Se aparecer apenas uma imagem ou tela cheia, explore no modo Tela e peça ao professor para conferir a compatibilidade.</p></aside>
+        <section class="cardboard-section" aria-labelledby="cardboardMaterialsTitle">
+          <h3 id="cardboardMaterialsTitle">O que vamos separar?</h3>
+          <ul class="cardboard-materials"><li>Papelão firme e fino</li><li>Molde impresso</li><li>Duas lentes próprias para o molde</li><li>Cola ou fita adesiva</li><li>Velcro e elástico</li><li>Celular compatível</li><li>Tesoura e ajuda de um adulto</li></ul>
+        </section>
+        <section class="cardboard-section" aria-labelledby="cardboardStepsTitle">
+          <div class="cardboard-section-heading"><h3 id="cardboardStepsTitle">Vamos montar? Um passo de cada vez</h3><span>MINI TUTORIAL</span></div>
+          <ol class="cardboard-steps">
+            <li><img src="assets/cardboard/print.svg" alt="Folhas do molde ao lado de uma impressora" width="280" height="170" loading="lazy"><div><span class="cardboard-step-number">1</span><h4>Imprima o molde</h4><p>Abra o PDF abaixo e imprima as cinco páginas. Escolha <strong>tamanho real (100%)</strong> e confira as medidas. Evite a opção “Ajustar à página”.</p></div></li>
+            <li><img src="assets/cardboard/cut.svg" alt="Molde colado no papelão, com linhas de corte e uma tesoura" width="280" height="170" loading="lazy"><div><span class="cardboard-step-number">2</span><h4>Prepare as peças</h4><p>Junte as partes do molde como indicado e cole no papelão. Peça a um adulto para recortar as linhas contínuas e as aberturas. As linhas tracejadas indicam dobras.</p></div></li>
+            <li><img src="assets/cardboard/fold.svg" alt="Peças de papelão dobradas formando o visor e duas lentes prontas para encaixar" width="280" height="170" loading="lazy"><div><span class="cardboard-step-number">3</span><h4>Dobre e encaixe</h4><p>Siga as abas e as marcas do molde. Encaixe as lentes compatíveis, fixe as partes indicadas e coloque o velcro e o elástico para segurar o celular.</p></div></li>
+            <li><img src="assets/cardboard/explore.svg" alt="Celular com duas imagens iguais de um ambiente, pronto para ser colocado no visor" width="280" height="170" loading="lazy"><div><span class="cardboard-step-number">4</span><h4>Prepare e explore</h4><p>Abra o LabMaker no celular. Com ajuda do professor, confira o modo VR e as duas imagens. Coloque o celular na horizontal, prenda com cuidado e olhe ao redor!</p></div></li>
+          </ol>
+          <p class="cardboard-care"><strong>Combinado da turma:</strong> monte com um adulto, use o visor sentado e em um espaço livre. Faça pausas e retire o visor se sentir desconforto. Nunca deixe as lentes apontadas para o Sol.</p>
+        </section>
+        <section class="cardboard-section cardboard-resources" aria-label="Vídeo e molde para impressão">
+          <div class="cardboard-video-card">
+            <span class="cardboard-eyebrow">VEJA NO VÍDEO</span><h3>Aprenda também assistindo</h3><p>Pause, observe e converse com o professor sobre cada etapa.</p>
+            <button id="cardboardPlay" class="cardboard-play" type="button"><span class="cardboard-play-icon" aria-hidden="true">▶</span><span>Assistir ao vídeo indicado<small>O vídeo abre aqui no painel</small></span></button>
+            <div id="cardboardVideoWrap" class="cardboard-video-wrap" hidden><iframe id="cardboardVideo" src="about:blank" title="Vídeo sobre Google Cardboard no YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+            <a href="https://www.youtube.com/watch?v=6He2Ff2s3A4" target="_blank" rel="noopener noreferrer">Abrir vídeo no YouTube <span aria-hidden="true">↗</span></a>
+            <p class="cardboard-small">Se o vídeo não carregar aqui, use o link do YouTube.</p>
+          </div>
+          <div class="cardboard-download-card">
+            <span class="cardboard-eyebrow">DO DIGITAL PARA O PAPELÃO</span><h3>Seu molde está aqui!</h3><p>Google Cardboard 2.0 · 5 páginas · PDF para impressão</p>
+            <img src="assets/cardboard/template-preview.png" alt="Prévia da primeira página do molde Google Cardboard 2.0, com linhas de corte e dobra" width="240" height="330" loading="lazy">
+            <a class="cardboard-action" href="assets/cardboard/GoogleCardboard_version2_a4.pdf" target="_blank" rel="noopener noreferrer">Abrir molde para imprimir <span aria-hidden="true">↗</span></a>
+            <a class="cardboard-download" href="assets/cardboard/GoogleCardboard_version2_a4.pdf" download="GoogleCardboard_version2_a4.pdf">Baixar molde (PDF)</a>
+          </div>
+        </section>
+        <footer class="cardboard-footer">Quer conhecer o projeto original? <a href="https://support.google.com/cardboard/answer/6295046?hl=pt-BR" target="_blank" rel="noopener noreferrer">Veja as orientações do Google <span aria-hidden="true">↗</span></a><span>Este painel é uma atividade educativa do LabMaker. As ilustrações são esquemáticas; siga as medidas do molde.</span></footer>
+      </div>
+    </article>
   </div>
 
   <div id="painel">
@@ -189,13 +245,14 @@
     <p class="carregando-texto">Carregando cena...</p>
   </div>
 
-  <script src="src/scenes.js"></script>
+  <script src="src/scenes.js?v=0.6.9"></script>
   <script src="src/tool-registry.js"></script>
   <script src="src/steps.js"></script>
   <script src="src/vr-panel.js?v=0.6.4"></script>
-  <script src="src/ui.js?v=0.6.4"></script>
+  <script src="src/ui.js?v=0.6.7"></script>
+  <script src="src/cardboard-panel.js?v=0.1.1"></script>
   <script src="src/tool-panel.js"></script>
-  <script src="src/hotspots.js?v=0.6.5"></script>
+  <script src="src/hotspots.js?v=0.6.7"></script>
   <script src="src/tag-types/label.js"></script>
   <script src="src/tag-types/media.js"></script>
   <script src="src/mode.js?v=0.6.4"></script>
@@ -207,6 +264,6 @@
   <script src="src/intro-rotation.js?v=0.1.0"></script>
   <script src="src/tags.js"></script>
   <script src="src/dev-mode.js"></script>
-  <script src="src/main.js?v=0.6.5"></script>
+  <script src="src/main.js?v=0.6.7"></script>
 </body>
 </html>

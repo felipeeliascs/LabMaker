@@ -55,8 +55,8 @@ function carregarCena(id) {
     carregarCena(destino);
   });
 
-  criarHotspotsRecurso(cena, function (titulo, descricao) {
-    abrirRecurso(titulo, descricao);
+  criarHotspotsRecurso(cena, function (titulo, descricao, recurso) {
+    abrirRecurso(titulo, descricao, recurso);
   });
 
   criarHotspotsFerramentas(cena, function (group) {

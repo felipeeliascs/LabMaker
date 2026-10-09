@@ -42,6 +42,8 @@ Categorias usadas: `programacao`, `robotica`, `eletronica`, `logica-digital`, `m
 
 `integration` aceita `external`, `iframe` ou `local`; `instrumented` fica reservado para recursos próprios futuros. Ferramentas externas atuais usam `external`, pois sites podem impedir incorporação. O painel só atribui `src` ao iframe de uma ferramenta `iframe` ou `local` após o clique. O botão **Abrir em nova aba** permanece disponível, inclusive quando o navegador não informa o bloqueio de iframe por CSP ou X-Frame-Options. Nenhum iframe externo carrega na entrada do tour.
 
+Em **Modelagem e Fabricação**, o hotspot **GearsBot** abre `https://gears.aposteriori.com.sg/` diretamente no painel de atividades com iframe. A cena 360° fica suspensa enquanto o simulador está aberto; fechar o painel descarrega o iframe e retoma o tour. Este acesso depende de conexão à internet e das permissões de incorporação do site externo.
+
 O GearsBot já tem registro local com destino `/gearsbot/`, marcado `available: false` até o pacote existir. Futuramente ele poderá registrar localmente início de atividade, execução do programa, tentativas, blocos, sensores, colisões, tempo e conclusão da missão. Esta etapa não armazena nem envia esses dados.
 
 O painel emite eventos locais `labmaker:tool-open` ao abrir uma ferramenta e `labmaker:tool-close` ao fechar um iframe próprio. A nova aba externa é independente: o navegador não fornece acesso ao seu conteúdo nem um fechamento confiável. Não há backend, login, captura de teclas, leitura de iframes externos ou análise da navegação do aluno.

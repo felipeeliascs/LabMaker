@@ -125,7 +125,9 @@ function obterTipoHotspot(dados, tipoPadrao) {
     .replace(/[ú]/g, 'u')
     .replace(/\s+/g, '-');
   tipo = ALIASES_TIPO_HOTSPOT[tipo] || tipo;
-  return TIPOS_HOTSPOT[tipo] || TIPOS_HOTSPOT[tipoPadrao] || TIPOS_HOTSPOT.texto;
+  var estilo = TIPOS_HOTSPOT[tipo] || TIPOS_HOTSPOT[tipoPadrao] || TIPOS_HOTSPOT.texto;
+  // A cor individual também identifica o anel e a borda do popup, sem alterar o tipo global.
+  return dados && dados.cor ? Object.assign({}, estilo, { cor: dados.cor }) : estilo;
 }
 
 // Os desenhos mudam; o círculo, o anel, as cores e os eventos são preservados.
@@ -480,7 +482,7 @@ function limparHotspots() {
 function criarHotspotsNavegacao(cena, aoClicar) {
   cena.navigationHotspots.forEach(function (h, index) {
     var el = document.createElement('a-entity');
-    var tipo = TIPOS_HOTSPOT.navegacao;
+    var tipo = obterTipoHotspot(h, 'navegacao');
     var id = 'nav-' + h.target;
     // Evita IDs duplicados se houver mais de um hotspot para o mesmo destino
     if (cena.navigationHotspots.filter(x => x.target === h.target).length > 1) {
@@ -491,7 +493,7 @@ function criarHotspotsNavegacao(cena, aoClicar) {
     configurarEntidadeHotspot(el, cena.id, id, view);
     el.setAttribute('class', 'clickable');
 
-    var circle = criarBaseHotspot(el, tipo, 0.92);
+    var circle = criarBaseHotspot(el, tipo, 0.92, h.icone);
 
     criarPopupHotspot(el, circle, criarTextoPopupTipo(tipo, h.label), {
       corFundo: tipo.fundo,
@@ -527,7 +529,7 @@ function criarHotspotsRecurso(cena, aoAbrir) {
     configurarEntidadeHotspot(el, cena.id, id, view);
     el.setAttribute('class', 'clickable');
 
-    var circle = criarBaseHotspot(el, tipo, 0.9);
+    var circle = criarBaseHotspot(el, tipo, 0.9, r.icone);
 
     criarPopupHotspot(el, circle, criarTextoPopupTipo(tipo, r.label), {
       corFundo: tipo.fundo,
@@ -544,7 +546,7 @@ function criarHotspotsRecurso(cena, aoAbrir) {
           el._wasDragged = false;
           return;
         }
-        aoAbrir(r.titulo, r.descricao);
+        aoAbrir(r.titulo, r.descricao, r);
       });
     }
 

@@ -10,11 +10,10 @@ const labmakerScenes = [
       { label: 'Entrar no\nLabMaker', target: 'hub', view: { yaw: -23, pitch: -0 } }
     ],
     resourceHotspots: [
-      { label: 'Como usar o LabMaker', titulo: 'Como usar o LabMaker', descricao: 'Olhe ao redor arrastando a cena com o mouse ou o dedo. Selecione os círculos para descobrir conteúdos, atividades e ambientes.', view: { yaw: -55, pitch: 8 } },
-      { label: 'Navegação', titulo: 'Navegação', descricao: 'Use os portais na cena ou o menu principal para visitar os ambientes. Em cada sala, o portal Voltar ao Hub leva você ao centro do laboratório.', view: { yaw: 12, pitch: 14 } },
+      { label: 'Como usar o LabMaker', icone: '#hotspotIconManual', titulo: 'Como usar o LabMaker', descricao: 'Olhe ao redor arrastando a cena com o mouse ou o dedo. Selecione os círculos para descobrir conteúdos, atividades e ambientes.', view: { yaw: -55, pitch: 8 } },
+      { label: 'Navegação', icone: '#hotspotIconBussola', cor: '#59C059', titulo: 'Navegação', descricao: 'Use os portais na cena ou o menu principal para visitar os ambientes. Em cada sala, o portal Voltar ao Hub leva você ao centro do laboratório.', view: { yaw: 12, pitch: 14 } },
       { label: 'Modo Tela / VR', titulo: 'Modo Tela / VR', descricao: 'No modo Tela, use mouse ou toque. No VR, olhe para um hotspot e aguarde o cursor completar a seleção. Atividades e ferramentas que precisam de controles abrem no modo Tela.', view: { yaw: 35, pitch: 8 } },
-      { label: 'Segurança Maker', titulo: 'Segurança no laboratório Maker', descricao: 'Siga as orientações do professor, use equipamentos de proteção quando necessário e não opere máquinas reais sem supervisão.', view: { yaw: -62, pitch: -12 } },
-      { label: 'Conheça os ambientes', titulo: 'Conheça os ambientes', descricao: 'O Hub Central conecta programação, eletrônica, fabricação digital, robótica, ciências e inteligência artificial. Explore livremente e descubra projetos Maker.', view: { yaw: 17, pitch: -12 } }
+      { label: 'GOOGLE CARDBOARD', titulo: 'GOOGLE CARDBOARD', descricao: 'Conheça um visor de realidade virtual feito com papelão, lentes e um celular.', painel: 'cardboard', tipo: 'misto', icone: '#hotspotIconCardboard', cor: '#9966FF', view: { yaw: -5, pitch: -9 } }
     ]
   },
   {
@@ -24,16 +23,16 @@ const labmakerScenes = [
     description: 'Espaço central que conecta todas as áreas temáticas do LabMaker.',
     initialRotation: '0 -90 0',
     navigationHotspots: [
-      { label: 'Programação\ne Computação', target: 'programacao', view: { yaw: -30, pitch: -5 }, proporcao: 0.9 },
-      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', view: { yaw: -11, pitch: 0 }, proporcao: 0.7 },
-      { label: 'Modelagem e\nFabricação', target: 'fabricacao', view: { yaw: 2, pitch: 5 }, proporcao: 0.7 },
-      { label: 'Arena de Robótica\ne Desafios', target: 'arena', view: { yaw: 10, pitch: 3 }, proporcao: 0.7 },
-      { label: 'Ciências e\nSimulações', target: 'ciencias', view: { yaw: 22, pitch: -8 }, proporcao: 0.7 },
-      { label: 'Inteligência\nArtificial', target: 'ia', view: { yaw: 42, pitch: -8 }, proporcao: 0.7 },
-      { label: 'Voltar à\nRecepção', target: 'antesala', view: { yaw: 30, pitch: 12 } }
+      { label: 'Programação\ne Computação', target: 'programacao', cor: '#4C97FF', view: { yaw: -30, pitch: -5 }, proporcao: 0.9 },
+      { label: 'Eletrônica\ne Prototipagem', target: 'eletronica', cor: '#9966FF', view: { yaw: -11, pitch: 0 }, proporcao: 0.7 },
+      { label: 'Modelagem e\nFabricação', target: 'fabricacao', cor: '#CF63CF', view: { yaw: 2, pitch: 5 }, proporcao: 0.7 },
+      { label: 'Arena de Robótica\ne Desafios', target: 'arena', cor: '#FFBF00', view: { yaw: 10, pitch: 3 }, proporcao: 0.7 },
+      { label: 'Ciências e\nSimulações', target: 'ciencias', cor: '#FFAB19', view: { yaw: 22, pitch: -8 }, proporcao: 0.7 },
+      { label: 'Inteligência\nArtificial', target: 'ia', cor: '#5CB1D6', view: { yaw: 42, pitch: -8 }, proporcao: 0.7 },
+      { label: 'Voltar à\nRecepção', target: 'antesala', cor: '#59C059', view: { yaw: 30, pitch: 12 } }
     ],
     resourceHotspots: [
-      { label: 'Projetos Maker', titulo: 'Projetos Maker', descricao: 'Os Projetos Maker integram programação, eletrônica, robótica, fabricação digital, ciência e inteligência artificial para resolver problemas e criar protótipos.', view: { yaw: -50, pitch: 10 } }
+      { label: 'Projetos Maker', cor: '#FF8C1A', titulo: 'Projetos Maker', descricao: 'Os Projetos Maker integram programação, eletrônica, robótica, fabricação digital, ciência e inteligência artificial para resolver problemas e criar protótipos.', view: { yaw: -50, pitch: 10 } }
     ]
   },
   {
@@ -93,6 +92,15 @@ const labmakerScenes = [
       { id: 'biblioteca-3d', label: 'Biblioteca de Modelos 3D', title: 'Biblioteca de Modelos 3D', toolIds: ['thingiverse', 'makerworld'], view: { yaw: -28, pitch: 5 } }
     ],
     simulatorHotspots: [
+      {
+        id: 'simulador-gearsbot-online',
+        titulo: 'GearsBot',
+        label: 'Robótica virtual',
+        tipo: 'iframe',
+        missao: 'Crie e programe robôs virtuais com blocos ou Python e teste seus projetos no simulador GearsBot.',
+        url: 'https://gears.aposteriori.com.sg/',
+        view: { yaw: -5, pitch: 12 }
+      },
       {
         id: 'simulador-impressao-3d',
         titulo: 'Simulador de Impressão 3D',

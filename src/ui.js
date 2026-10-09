@@ -1,5 +1,10 @@
 // Controle do painel de recursos educacionais
-function abrirRecurso(titulo, descricao) {
+function abrirRecurso(titulo, descricao, recurso) {
+  if (recurso && recurso.painel === 'cardboard' && window.labmakerCardboard) {
+    window.labmakerCardboard.open();
+    return;
+  }
+  if (window.labmakerCardboard) window.labmakerCardboard.close();
   // Modo VR: usar painel espacial
   if (window.labmakerMode && window.labmakerMode.isVR()) {
     if (window.labmakerVRPanel) {
@@ -71,6 +76,7 @@ function criarLinks(links) {
 }
 
 function fecharRecurso() {
+  if (window.labmakerCardboard) window.labmakerCardboard.close();
   var painel = document.getElementById('painelRecurso');
   if (painel) {
     painel.style.display = 'none';

@@ -46,7 +46,9 @@ LabMaker
     └── Inteligência artificial
 ```
 
-As atividades integradas usam o selo **ATIVIDADE**. Os grupos de ferramentas externas usam **EXPLORAR**. Os sites externos abrem em nova aba, sem coleta de navegação ou projetos. Consulte [a documentação do ecossistema](docs/ecossistema-ferramentas.md) para cadastrar ferramentas.
+Em **Modelagem e Fabricação**, o hotspot **GearsBot** abre a versão online do simulador dentro do LabMaker. A recepção também inclui o painel **Google Cardboard**, com tutorial ilustrado, vídeo e molde para impressão.
+
+As atividades integradas usam o selo **ATIVIDADE**. Os grupos de ferramentas externas usam **EXPLORAR**. As ferramentas externas do menu Explorar abrem em nova aba, sem coleta de navegação ou projetos. O acesso online ao GearsBot utiliza um iframe. Consulte [a documentação do ecossistema](docs/ecossistema-ferramentas.md) para cadastrar ferramentas.
 
 ## Como Executar Localmente
 
