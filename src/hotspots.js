@@ -97,7 +97,8 @@ var TIPOS_HOTSPOT = {
   pergunta: { chave: 'pergunta', rotulo: 'PERGUNTA', cor: '#6D28D9', fundo: '#2E1065', icone: 'ajuda' },
   enquete: { chave: 'enquete', rotulo: 'ENQUETE', cor: '#BE185D', fundo: '#500724', icone: 'grafico' },
   atividade: { chave: 'atividade', rotulo: 'ATIVIDADE', cor: '#15803D', fundo: '#10321A', icone: 'controle' },
-  simulador: { chave: 'simulador', rotulo: 'SIMULADOR 3D', cor: '#155E75', fundo: '#083344', icone: 'cubo' }
+  explorar: { chave: 'explorar', rotulo: 'EXPLORAR', cor: '#0E7490', fundo: '#083344', icone: 'painel' },
+  simulador: { chave: 'simulador', rotulo: 'ATIVIDADE', cor: '#155E75', fundo: '#083344', icone: 'cubo' }
 };
 
 var ALIASES_TIPO_HOTSPOT = {
@@ -235,7 +236,7 @@ function criarTexturaLabel(texto, opcoes) {
   var yInicial = (altura - (linhas.length - 1) * linhaAltura) / 2;
   
   linhas.forEach(function(linha, index) {
-    ctx.fillText(linha, largura / 2, yInicial + index * linhaAltura);
+    ctx.fillText(linha, largura / 2, yInicial + index * linhaAltura, largura - 24);
   });
   
   return canvas.toDataURL('image/png');
@@ -547,6 +548,28 @@ function criarHotspotsRecurso(cena, aoAbrir) {
       });
     }
 
+    document.querySelector('#hotspotRoot').appendChild(el);
+    hotspotEntities.push(el);
+  });
+}
+
+// Um hotspot por grupo; as ferramentas e URLs vivem no ToolRegistry.
+function criarHotspotsFerramentas(cena, aoAbrir) {
+  (cena.toolHotspots || []).forEach(function (group) {
+    var el = document.createElement('a-entity');
+    var tipo = TIPOS_HOTSPOT.explorar;
+    var id = 'tool-' + group.id;
+    var view = getHotspotPosition(cena.id, id, group.view || {});
+    configurarEntidadeHotspot(el, cena.id, id, view);
+    el.setAttribute('class', 'clickable');
+    var circle = criarBaseHotspot(el, tipo, 0.9);
+    criarPopupHotspot(el, circle, criarTextoPopupTipo(tipo, group.label), {
+      corFundo: tipo.fundo, corBorda: tipo.cor
+    });
+    el.addEventListener('click', function () {
+      if (el._wasDragged) { el._wasDragged = false; return; }
+      aoAbrir(group);
+    });
     document.querySelector('#hotspotRoot').appendChild(el);
     hotspotEntities.push(el);
   });

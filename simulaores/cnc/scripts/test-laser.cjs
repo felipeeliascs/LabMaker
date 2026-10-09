@@ -6,7 +6,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 require.extensions['.ts'] = (module, filename) => {
   module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true },
   }).outputText, filename);
 };
 const { parseGcode, prepareProgram, BED } = require('../src/lib/machine/cutProgram.ts');

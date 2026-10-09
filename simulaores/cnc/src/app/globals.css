@@ -460,3 +460,5 @@ input[type='range']::-webkit-slider-thumb:hover {
   border-radius: var(--hmi-radius);
   min-height: 44px;
 }
+
+:root { --font-inter: "Segoe UI", system-ui, sans-serif; --font-plex-sans: "Segoe UI", system-ui, sans-serif; --font-plex-mono: Consolas, monospace; }

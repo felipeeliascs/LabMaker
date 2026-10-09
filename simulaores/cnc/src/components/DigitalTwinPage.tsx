@@ -58,6 +58,13 @@ export default function DigitalTwinPage() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  const [robotStatus, setRobotStatus] = useState("Robô não carregado");
+  useEffect(() => {
+    const query = matchMedia("(max-width: 767px)");
+    const sync = () => setMobile(query.matches); sync(); query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
 
   // UR5 state
   const [ur5Joints, setUr5Joints] = useState<number[]>([0, 0, 0, 0, 0, 0]);
@@ -103,7 +110,8 @@ export default function DigitalTwinPage() {
   // without hammering React with 60 re-renders/second
   useEffect(() => {
     const id = setInterval(() => {
-      setUi(prev => ({ ...prev,
+      if (document.hidden) return;
+      setUi(prev => { const next: UiState = { ...prev,
         machineOn: machineState.en_marche,
         mode: machineState.mode,
         laserMode: machineState.laser_actif ? 'ON' : 'OFF',
@@ -115,7 +123,8 @@ export default function DigitalTwinPage() {
         vibrationHistory: [...machineState.vibrationHistory],
         temperature: machineState.temperature,
         doorOpen: machineState.porte_cible > 0 || machineState.porte_progression > 0.001,
-      }));
+      };
+      return JSON.stringify(prev) === JSON.stringify(next) ? prev : next; });
       const r = ur5TcpRef.current;
       setUr5TcpCoords((prev) => {
         // Skip setState if values haven't changed (avoids unnecessary renders)
@@ -202,6 +211,8 @@ export default function DigitalTwinPage() {
     onPositionXChange: actions.setPositionX,
     onPositionYChange: actions.setPositionY,
     onLaserPowerChange: actions.setLaserPower,
+    robotStatus,
+    onLoadRobot: () => sceneRef.current?.loadRobot(),
     // UR5 props
     ur5Joints,
     ur5GripValue,
@@ -212,12 +223,12 @@ export default function DigitalTwinPage() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.dock}>
+      {!mobile && <div className={styles.dock}>
         <SidebarPanel
           variant="dock"
           {...sidebarProps}
         />
-      </div>
+      </div>}
 
       <div className={styles.viewport}>
         <MobileTopBar onOpenSidebar={() => setSidebarOpen(true)} />
@@ -230,18 +241,19 @@ export default function DigitalTwinPage() {
           ur5State={ur5State}
           onToggleDoor={actions.toggleDoor}
           onUr5TcpUpdate={handleUr5TcpUpdate}
+          onRobotStatus={setRobotStatus}
         />
 
         <LoadingOverlay visible={loading} progress={progress} />
 
-        <div className={styles.mobile}>
+        {mobile && <div className={styles.mobile}>
           <SidebarPanel
             {...sidebarProps}
             variant="drawer"
             isOpen={sidebarOpen}
             onClose={() => setSidebarOpen(false)}
           />
-        </div>
+        </div>}
 
         <StatusHud
           vibration={ui.vibrationValue}

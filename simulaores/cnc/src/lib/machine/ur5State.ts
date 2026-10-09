@@ -5,7 +5,7 @@
  */
 
 import * as THREE from 'three';
-import { STLLoader as ThreeSTLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { ModelLoader } from './modelLoader';
 
 /* ─── DH Parameters (from original Scene.tsx) ────────────────────────────── */
 
@@ -82,7 +82,8 @@ export class UR5State {
   private tcpWorldPos = new THREE.Vector3();
   private robotWorldPos = new THREE.Vector3();
 
-  private loader = new ThreeSTLLoader();
+  private loader = new ModelLoader();
+  private generation = 0;
   private _materials = new Map<number, THREE.MeshStandardMaterial>();
 
   constructor() {
@@ -99,14 +100,17 @@ export class UR5State {
     if (this._loadingPromise) return this._loadingPromise;
 
     this._isDisposed = false;
+    this.loader = new ModelLoader();
+    const loader = this.loader, generation = ++this.generation;
+    const geometries: THREE.BufferGeometry[] = [], gripperGeoms: THREE.BufferGeometry[] = [];
     this._loadingPromise = (async () => {
       try {
         const stlFiles = ['base.stl', 'j1.stl', 'j2.stl', 'j3.stl', 'j4.stl', 'j5.stl', 'j6.stl'];
-        const geometries: THREE.BufferGeometry[] = [];
+
 
         for (let i = 0; i < stlFiles.length; i++) {
-          const geom = await this.loader.loadAsync(`${baseUrl}/${stlFiles[i]}`);
-          geom.computeVertexNormals();
+          const geom = await loader.load(`${baseUrl}/${stlFiles[i]}`);
+          if (generation !== this.generation) { geom.dispose(); throw new DOMException("Cancelado", "AbortError"); }
           geometries.push(geom);
           onProgress?.((i + 1) / (stlFiles.length + 9)); // +9 for gripper meshes
         }
@@ -122,15 +126,15 @@ export class UR5State {
           'rg6_meshes/l_inner.stl',
           'rg6_meshes/r_inner.stl',
         ];
-        const gripperGeoms: THREE.BufferGeometry[] = [];
+
         for (let i = 0; i < gripperFiles.length; i++) {
-          const geom = await this.loader.loadAsync(`${baseUrl}/${gripperFiles[i]}`);
-          geom.computeVertexNormals();
+          const geom = await loader.load(`${baseUrl}/${gripperFiles[i]}`);
+          if (generation !== this.generation) { geom.dispose(); throw new DOMException("Cancelado", "AbortError"); }
           gripperGeoms.push(geom);
           onProgress?.((stlFiles.length + i + 1) / (stlFiles.length + gripperFiles.length));
         }
 
-        if (this._isDisposed) {
+        if (this._isDisposed || generation !== this.generation) {
           // Clean up if disposed while loading
           geometries.forEach(g => g.dispose());
           gripperGeoms.forEach(g => g.dispose());
@@ -139,16 +143,18 @@ export class UR5State {
 
         // Build robot
         this.buildRobot(geometries, gripperGeoms);
+        this.applyJoints(); this.applyGripper();
         this.loaded = true;
         onProgress?.(1);
 
         console.log('[UR5State] Robot loaded successfully');
         return true;
       } catch (error) {
-        console.error('[UR5State] Failed to load robot:', error);
+        geometries.forEach(g => g.dispose()); gripperGeoms.forEach(g => g.dispose());
+        if (!this._isDisposed) console.error('[UR5State] Failed to load robot:', error);
         return false;
       } finally {
-        this._loadingPromise = null;
+        if (generation === this.generation) this._loadingPromise = null;
       }
     })();
 
@@ -180,7 +186,7 @@ export class UR5State {
     const PLATFORM_HEIGHT = 1.15; // 1200mm in meters = 1.2m (will become 1200mm after 1000x scale)
 
     // Main vertical column/cylinder - tapered for industrial look
-    const columnGeometry = new THREE.CylinderGeometry(0.05, 0.10, PLATFORM_HEIGHT, 32);
+    const columnGeometry = new THREE.CylinderGeometry(0.05, 0.10, PLATFORM_HEIGHT, 12);
     const columnMaterial = this.getMaterial(0x4a5568, 0.7, 0.3); // Industrial gray
     const column = new THREE.Mesh(columnGeometry, columnMaterial);
     column.position.set(-0.55, -0.5, (PLATFORM_HEIGHT) / 2);
@@ -564,6 +570,7 @@ export class UR5State {
   dispose(): void {
     console.log('[UR5State] Disposing robot resources...');
     this._isDisposed = true;
+    this.generation++; this.loader.dispose(); this.loaded = false; this.tcpMesh = null;
     this._loadingPromise = null;
 
     // Dispose all geometries and materials in the robot group

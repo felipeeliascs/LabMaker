@@ -39,17 +39,18 @@
 
     texto('Cenas', 54, 132, 32);
     var cenas = [
-      ['antesala', 'Antesala'], ['hub', 'Hub'], ['programacao', 'Programação'],
-      ['eletronica', 'Eletrônica'], ['fabricacao', 'Fabricação'], ['arena', 'Arena']
+      ['antesala', 'Recepção'], ['hub', 'Hub'], ['programacao', 'Programação'],
+      ['eletronica', 'Eletrônica'], ['fabricacao', 'Fabricação'], ['arena', 'Arena'],
+      ['ciencias', 'Ciências'], ['ia', 'IA']
     ];
     cenas.forEach(function (cena, indice) {
-      var coluna = indice % 3;
-      var linha = Math.floor(indice / 3);
-      var x = 54 + coluna * 306;
+      var coluna = indice % 4;
+      var linha = Math.floor(indice / 4);
+      var x = 54 + coluna * 230;
       var y = 158 + linha * 62;
       var selecionada = cena[0] === window.cenaAtual;
-      caixa(x, y, 286, 50, 16, selecionada ? '#D1D1D1' : '#646464');
-      texto(cena[1], x + 143, y + 25, 25, selecionada ? '#202020' : '#FFFFFF', 'center');
+      caixa(x, y, 214, 50, 16, selecionada ? '#D1D1D1' : '#646464');
+      texto(cena[1], x + 107, y + 25, 22, selecionada ? '#202020' : '#FFFFFF', 'center');
     });
 
     texto('Ferramentas', 54, 322, 32);
@@ -136,9 +137,9 @@
     abrirPainelPercurso();
   });
 
-  ['antesala', 'hub', 'programacao', 'eletronica', 'fabricacao', 'arena'].forEach(function (id, indice) {
-    hitboxCanvas('vrMenuCena' + indice, 54 + indice % 3 * 306,
-      158 + Math.floor(indice / 3) * 62, 286, 50, function () {
+  ['antesala', 'hub', 'programacao', 'eletronica', 'fabricacao', 'arena', 'ciencias', 'ia'].forEach(function (id, indice) {
+    hitboxCanvas('vrMenuCena' + indice, 54 + indice % 4 * 230,
+      158 + Math.floor(indice / 4) * 62, 214, 50, function () {
         window.labmakerMainMenu.goToScene(id);
       });
   });

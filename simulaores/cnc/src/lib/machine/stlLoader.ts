@@ -4,7 +4,7 @@
  */
 
 import * as THREE from 'three';
-import { STLLoader as ThreeSTLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { ModelLoader } from './modelLoader';
 
 export interface STLLoadOptions {
     baseUrl?: string;
@@ -22,7 +22,7 @@ export interface LoadedComponent {
 
 export class STLLoader {
     private materials: Map<string, THREE.Material> = new Map();
-    private threeLoader: ThreeSTLLoader;
+    private threeLoader: ModelLoader;
     private onProgressCallback?: (_progress: number) => void;
 
     constructor(options?: STLLoadOptions) {
@@ -42,7 +42,7 @@ export class STLLoader {
             };
         }
 
-        this.threeLoader = new ThreeSTLLoader(loadingManager);
+        this.threeLoader = new ModelLoader();
         this.initializeMaterials();
     }
 
@@ -85,8 +85,8 @@ export class STLLoader {
         // Chrome - precision surfaces
         this.materials.set('chrome', new THREE.MeshStandardMaterial({
             color: 0xcccccc,
-            metalness: 1.0,
-            roughness: 0.1,
+            metalness: 0.4,
+            roughness: 0.4,
             side: THREE.FrontSide
         }));
 
@@ -116,9 +116,9 @@ export class STLLoader {
         materialName: string = 'steel'
     ): Promise<LoadedComponent> {
         try {
-            const geometry = await this.threeLoader.loadAsync(url);
+            const geometry = await this.threeLoader.load(url);
 
-            geometry.computeVertexNormals();
+
 
             const material = this.getMaterial(materialName);
             const mesh = new THREE.Mesh(geometry, material);
@@ -160,6 +160,7 @@ export class STLLoader {
         ];
 
         const total = componentSpecs.length;
+        try {
 
         for (let i = 0; i < componentSpecs.length; i++) {
             const spec = componentSpecs[i];
@@ -178,12 +179,14 @@ export class STLLoader {
         }
 
         return components;
+        } catch (error) { components.forEach(c => c.mesh.geometry.dispose()); throw error; }
     }
 
     /**
      * Clean up resources
      */
     dispose(): void {
+        this.threeLoader.dispose();
         this.materials.forEach(material => {
             if (material instanceof THREE.Material) {
                 material.dispose();

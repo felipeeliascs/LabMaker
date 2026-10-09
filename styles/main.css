@@ -88,6 +88,59 @@ body {
   background: #F57C00;
 }
 
+.tool-panel-overlay[hidden],
+#toolPanelEmbed[hidden] { display: none; }
+
+.tool-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(8, 15, 24, 0.82);
+}
+
+.tool-panel-content {
+  width: min(720px, 100%);
+  max-height: min(90dvh, 800px);
+  overflow-y: auto;
+  padding: 22px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #f8fafc;
+  color: #12202b;
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.38);
+}
+
+.tool-panel-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.tool-panel-header h2 { margin: 5px 0 0; font-size: 24px; }
+.tool-badge { display: inline-block; padding: 4px 8px; border-radius: 5px; background: #cffafe; color: #155e75; font: bold 11px Arial, sans-serif; letter-spacing: .06em; }
+.tool-panel-intro { margin: 12px 0 18px; line-height: 1.5; }
+.tool-panel-list { list-style: none; margin: 0; padding: 0; }
+.tool-card { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 16px 0; border-top: 1px solid #cbd5e1; }
+.tool-card-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px; background: #164e63 center/cover no-repeat; color: #fff; font-weight: bold; font-size: 20px; }
+.tool-card-body strong { font-size: 17px; }
+.tool-card-body p { margin: 5px 0 0; line-height: 1.4; font-size: 14px; }
+.tool-card button, #toolPanelClose, #toolPanelFallback { border: 0; border-radius: 8px; padding: 10px 14px; background: #0e7490; color: #fff; font: bold 13px Arial, sans-serif; cursor: pointer; text-decoration: none; text-align: center; }
+.tool-card button:hover, #toolPanelClose:hover, #toolPanelFallback:hover { background: #155e75; }
+.tool-card button:disabled { background: #64748b; cursor: default; }
+.tool-panel-content :focus-visible { outline: 3px solid #e67e22; outline-offset: 3px; }
+#toolPanelEmbed { margin-top: 14px; }
+#toolPanelFrame { display: block; width: 100%; height: min(52dvh, 480px); border: 1px solid #94a3b8; border-radius: 8px; background: #fff; }
+#toolPanelFallback { display: inline-block; margin-top: 12px; }
+#toolPanelStatus { min-height: 1.2em; margin: 12px 0 0; font-size: 13px; color: #475569; }
+
+@media (max-width: 620px) {
+  .tool-panel-content { padding: 18px; }
+  .tool-panel-header h2 { font-size: 20px; }
+  .tool-card { grid-template-columns: 48px minmax(0, 1fr); }
+  .tool-card-icon { width: 48px; height: 48px; }
+  .tool-card button { grid-column: 1 / -1; width: 100%; }
+}
+
 #recursoAcoes {
   display: none;
   margin: 12px 0;
@@ -567,6 +620,8 @@ body {
   min-width: 0;
 }
 
+.activity-badge { align-self: flex-start; margin-bottom: 4px; padding: 3px 7px; border-radius: 4px; background: #166534; color: #fff; font: bold 10px Arial, sans-serif; letter-spacing: .06em; }
+
 #jogoTitulo {
   color: #FF9800;
   font-size: 18px;
@@ -593,6 +648,64 @@ body {
 
 #jogoModo:empty {
   display: none;
+}
+
+.blocos-guia[hidden] { display: none; }
+.blocos-guia {
+  flex: 0 0 auto;
+  max-height: min(35dvh, 260px);
+  overflow-y: auto;
+  margin-bottom: 8px;
+  border: 1px solid #315a67;
+  border-radius: 8px;
+  background: #10252c;
+  color: #f5fafa;
+}
+
+.blocos-guia summary {
+  padding: 9px 12px;
+  color: #a5f3fc;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.blocos-guia-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+
+.blocos-guia-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 6px;
+  background: #1b3842;
+}
+
+.blocos-guia-item img {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 5px;
+  background: white;
+}
+
+.blocos-guia-item strong { font-size: 13px; }
+.blocos-guia-item p { margin: 4px 0 0; font-size: 12px; line-height: 1.35; }
+
+@media (max-width: 880px) {
+  .blocos-guia-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .blocos-guia { max-height: 30dvh; }
+  .blocos-guia-grid { grid-template-columns: 1fr; }
 }
 
 #jogoViewportArea {

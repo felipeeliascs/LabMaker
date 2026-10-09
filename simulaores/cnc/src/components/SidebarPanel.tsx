@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import VibrationChart from '@/components/VibrationChart';
 import styles from './Simulator.module.css';
+import { assetUrl } from '@/lib/machine/modelLoader';
 type VibrationStatus = 'normal' | 'warning' | 'danger';
 type MachineMode = 'MANUAL' | 'AUTOMATIC' | 'MAINTENANCE';
 type LaserMode = 'ON' | 'OFF';
@@ -10,6 +11,8 @@ type LaserMode = 'ON' | 'OFF';
 type SidebarTab = 'cnc' | 'ur5';
 
 interface SidebarPanelProps {
+  robotStatus: string;
+  onLoadRobot: () => void;
   cutPanel?: React.ReactNode;
   axesLocked?: boolean;
   machineOn: boolean;
@@ -57,7 +60,7 @@ function RangeControl({ label, value, min, max, step = 1, unit = 'mm', displaySc
 }
 
 export default function SidebarPanel({
-  cutPanel, axesLocked = false, machineOn, mode, laserMode, positionX, positionY,
+  robotStatus, onLoadRobot, cutPanel, axesLocked = false, machineOn, mode, laserMode, positionX, positionY,
   laserPower, vibrationHistory, vibrationStatus, onTogglePower, onEstop, onDoorOpen,
   onDoorClose, onResetView, onModeChange, onLaserModeChange, onPositionXChange,
   onPositionYChange, onLaserPowerChange, isOpen = true, onClose, variant = 'dock',
@@ -141,6 +144,11 @@ export default function SidebarPanel({
           </section>
         </> : <>
           <section className={styles.section}>
+            <p role="status" className={styles.muted}>{robotStatus}</p>
+            {robotStatus !== 'Robô pronto' && <button className={styles.button} disabled={robotStatus.startsWith('Carregando')} onClick={onLoadRobot}>Carregar robô UR5</button>}
+          </section>
+          <fieldset disabled={robotStatus !== 'Robô pronto'} className={styles.robotControls}>
+          <section className={styles.section}>
             <h2>Controle das juntas</h2>
             {ur5Joints.map((value, index) => <RangeControl key={index} label={`Junta ${index + 1} · rotação`} value={value} min={-Math.PI} max={Math.PI} step={0.01} unit="°" displayScale={180 / Math.PI} onChange={v => onUr5JointChange?.(index, v)} />)}
           </section>
@@ -157,7 +165,13 @@ export default function SidebarPanel({
             <h2>Sistema</h2>
             <button className={styles.button} style={{ width: '100%' }} onClick={onResetView}>Restaurar vista</button>
           </section>
+          </fieldset>
         </>}
+        <details className={styles.section}><summary>Sobre / Informações</summary>
+          <p className={styles.muted}>Este simulador é um fork do projeto original ThreeJS-CNC, adaptado para o Labmaker. Inclui simulação visual de corte em MDF, importação de SVG e G-code e robô UR5 opcional.</p>
+          <p className={styles.muted}>Os arquivos de corte são processados neste navegador. O simulador não controla uma máquina real.</p>
+          <a href={assetUrl("/LICENSE.txt")} target="_blank" rel="noreferrer">Licença MIT e atribuição do projeto original</a>
+        </details>
       </div>
       <footer className={styles.footer}><span>Intertravamento de segurança</span><span>v1.0</span></footer>
     </aside>

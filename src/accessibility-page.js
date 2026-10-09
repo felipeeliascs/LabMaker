@@ -15,7 +15,7 @@
   });
 
   var sceneId = new URLSearchParams(location.search).get('scene');
-  if (['antesala', 'hub', 'programacao', 'eletronica', 'fabricacao', 'arena'].includes(sceneId)) {
+  if (['antesala', 'hub', 'programacao', 'eletronica', 'fabricacao', 'arena', 'ciencias', 'ia'].includes(sceneId)) {
     document.getElementById('voltarTour').href = 'index.html?scene=' + encodeURIComponent(sceneId);
   }
 })();

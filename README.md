@@ -18,12 +18,35 @@ Este projeto é um protótipo educacional de mestrado, com foco em viabilidade, 
 
 | # | Cena | Arquivo |
 |---|---|---|
-| 1 | Antesala / Recepção | `01-antesala-recepcao.png` |
-| 2 | Hub Central | `02-hub-central.png` |
-| 3 | Programação e Robótica | `03-programacao-robotica.png` |
-| 4 | Eletrônica e Prototipagem | `04-eletronica-prototipagem.png` |
-| 5 | Fabricação Digital | `05-fabricacao-digital.png` |
-| 6 | Arena de Batalha de Robôs | `06-arena-batalha-robos.png` |
+| 1 | Recepção e Orientação | `01-antesala-recepcao.jpg` |
+| 2 | Hub Central do LabMaker | `02-hub-central.jpg` |
+| 3 | Programação e Computação Criativa | `03-programacao-robotica.jpg` |
+| 4 | Eletrônica e Prototipagem | `04-eletronica-prototipagem.jpg` |
+| 5 | Modelagem e Fabricação Digital | `05-fabricacao-digital.jpg` |
+| 6 | Arena de Robótica e Desafios | `06-arena-batalha-robos.jpg` |
+| 7 | Ciências e Simulações | panorama provisório de Eletrônica |
+| 8 | Inteligência Artificial | panorama provisório de Programação |
+
+## Ecossistema de Ferramentas
+
+O LabMaker reúne atividades próprias e portas para exploração livre:
+
+```text
+LabMaker
+├── Ferramentas próprias
+│   ├── Blockly
+│   ├── Impressão 3D
+│   ├── CNC Laser
+│   └── GearsBot (integração local futura)
+└── Ferramentas externas
+    ├── Programação e robótica
+    ├── Eletrônica e lógica digital
+    ├── Modelagem e bibliotecas 3D
+    ├── Ciências
+    └── Inteligência artificial
+```
+
+As atividades integradas usam o selo **ATIVIDADE**. Os grupos de ferramentas externas usam **EXPLORAR**. Os sites externos abrem em nova aba, sem coleta de navegação ou projetos. Consulte [a documentação do ecossistema](docs/ecossistema-ferramentas.md) para cadastrar ferramentas.
 
 ## Como Executar Localmente
 
@@ -54,15 +77,19 @@ labmaker/
 ├── src/
 │   ├── scenes.js           # Dados das cenas
 │   ├── hotspots.js         # Hotspots de navegação e recurso
+│   ├── tool-registry.js     # Cadastro único das ferramentas
+│   ├── tool-panel.js        # Painel reutilizável de exploração
 │   ├── ui.js               # Painel pedagógico
 │   ├── steps.js            # Fluxo pedagógico
 │   └── main.js             # Inicialização
 ├── assets/
-│   ├── panoramas/          # Imagens 360° (6 cenas)
-│   └── icons/              # Ícones da interface
+│   ├── panoramas/          # Imagens 360° locais
+│   ├── icons/              # Ícones da interface
+│   └── tools/              # Ícones locais das ferramentas
 ├── docs/                   # Documentação
 │   ├── arquitetura.md      # Arquitetura do sistema
 │   ├── mapa-cenas.md       # Especificação das cenas
+│   ├── ecossistema-ferramentas.md # Cadastro e integração de ferramentas
 │   ├── roadmap-labmaker.md # Roadmap de desenvolvimento
 │   └── checklist-testes.md # Checklist de testes manuais
 └── tests/                  # (reservado)

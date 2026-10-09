@@ -13,7 +13,8 @@ const DEBUG = false;
 
 export class MachineState {
   cutting = new LaserCutting();
-  cutaway = true;
+  cutaway = false;
+  shellHidden = true;
   en_marche = false;
   mode: "MANUAL" | "AUTOMATIC" | "MAINTENANCE" = "MANUAL";
   position_x = 0;
@@ -244,12 +245,18 @@ export class MachineState {
     this.position_y = BED.y - this.cutting.position.y - this.componentPositions.tool.y;
   }
 
+  setShellMode(mode: "hidden" | "transparent" | "solid") {
+    this.shellHidden = mode === "hidden";
+    this.setCutaway(mode === "transparent");
+  }
+
   setCutaway(value: boolean) {
     this.cutaway = value;
     // Visual inspection only: the physical lid/interlock retains its actual state.
     for (const name of ['chassis', 'door']) {
       const component = this.loadedComponents.get(name);
       if (!component) continue;
+      component.mesh.visible = !this.shellHidden;
       const material = component.mesh.material as THREE.MeshStandardMaterial;
       material.transparent = value; material.opacity = value ? 0.14 : 1;
       material.depthWrite = !value; material.needsUpdate = true;
@@ -770,7 +777,8 @@ export class MachineState {
     // Compute bounding box in world space
     const box = new THREE.Box3();
     doorMesh.geometry.computeBoundingBox();
-    const geoBox = doorMesh.geometry.boundingBox;
+    const original = doorMesh.geometry.userData.originalBounds;
+    const geoBox = original ? new THREE.Box3(new THREE.Vector3(...original.min), new THREE.Vector3(...original.max)) : doorMesh.geometry.boundingBox;
     if (!geoBox) {
       console.warn('[MachineState] Door geometry has no bounding box');
       return;
@@ -931,7 +939,11 @@ export class MachineState {
     // Clear maps and arrays
     this.kinematicLinks.clear();
     this.staticObjs = [];
-    this.vibrationHistory = [];
+    this.vibrationHistory = new Array<number>(60).fill(0);
+    this._vibHead = 0; this.vibSampleTimer = 0;
+    this.kinematicChain.links.clear(); this.kinematicChain.joints.clear();
+    this.doorPivot.position.set(0,0,0); this.doorPivot.rotation.set(0,0,0);
+    this.groupDoor.position.set(0,0,0); this.porte_progression = 0; this.porte_cible = 0;
 
     console.log('[MachineState] Machine resources disposed');
   }

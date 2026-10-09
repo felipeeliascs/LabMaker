@@ -66,6 +66,7 @@ function setModeVR() {
   // Fechar painel HTML se estiver aberto
   if (typeof fecharRecurso === 'function') fecharRecurso();
   if (typeof fecharPainelPercurso === 'function') fecharPainelPercurso();
+  if (window.labmakerToolPanel) window.labmakerToolPanel.close();
   
   // Fechar painel espacial se estiver aberto
   if (window.labmakerVRPanel && window.labmakerVRPanel.estaAberto()) {

@@ -53,6 +53,22 @@
     </div>
   </div>
 
+  <div id="toolPanel" class="tool-panel-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="toolPanelTitle">
+    <div class="tool-panel-content">
+      <div class="tool-panel-header">
+        <div><span class="tool-badge">EXPLORAR</span><h2 id="toolPanelTitle">Ferramentas</h2></div>
+        <button id="toolPanelClose" type="button" aria-label="Fechar ferramentas">Fechar</button>
+      </div>
+      <p class="tool-panel-intro">Escolha uma ferramenta, explore e crie livremente. Sites externos podem abrir em outra aba.</p>
+      <ul id="toolPanelList" class="tool-panel-list"></ul>
+      <div id="toolPanelEmbed" hidden>
+        <iframe id="toolPanelFrame" src="about:blank" title="Ferramenta" loading="lazy" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+        <a id="toolPanelFallback" href="#" target="_blank" rel="noopener noreferrer">Abrir em nova aba</a>
+      </div>
+      <p id="toolPanelStatus" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
   <div id="painel">
     <span id="nomeCena">Antesala / Recepção</span>
     <p id="descricaoCena"></p>
@@ -64,12 +80,14 @@
 
   <div id="menuExtras" hidden>
     <nav id="menuCenas" aria-label="Menu de cenas">
-      <button type="button" data-scene-id="antesala">Antesala</button>
+      <button type="button" data-scene-id="antesala">Recepção</button>
       <button type="button" data-scene-id="hub">Hub</button>
       <button type="button" data-scene-id="programacao">Programação</button>
       <button type="button" data-scene-id="eletronica">Eletrônica</button>
       <button type="button" data-scene-id="fabricacao">Fabricação</button>
       <button type="button" data-scene-id="arena">Arena</button>
+      <button type="button" data-scene-id="ciencias">Ciências</button>
+      <button type="button" data-scene-id="ia">IA</button>
     </nav>
 
     <div id="menuFerramentas" aria-label="Ferramentas da cena">
@@ -124,12 +142,34 @@
   <div id="painelJogo" aria-hidden="true">
     <div id="jogoCabecalho">
       <div id="jogoInfo">
+        <span class="activity-badge">ATIVIDADE</span>
         <span id="jogoTitulo"></span>
         <span id="jogoMissao"></span>
         <span id="jogoModo"></span>
       </div>
       <button id="btnFecharJogo">Fechar</button>
     </div>
+    <details id="blocosGuia" class="blocos-guia" hidden>
+      <summary>Antes de começar: conheça os componentes</summary>
+      <div class="blocos-guia-grid">
+        <div class="blocos-guia-item">
+          <img src="jogos/blockly-games/pt-br/puzzle/arduino.png" alt="Placa de microcontrolador usada na atividade Blocos" loading="lazy">
+          <div><strong>Microcontrolador</strong><p>É um pequeno computador programável. Lê sinais dos sensores e controla componentes como luzes e motores.</p></div>
+        </div>
+        <div class="blocos-guia-item">
+          <img src="jogos/blockly-games/pt-br/puzzle/rgb.png" alt="LED RGB usado na atividade Blocos" loading="lazy">
+          <div><strong>LED RGB</strong><p>Um LED emite luz. O LED RGB reúne luz vermelha, verde e azul, que podem ser combinadas para criar outras cores.</p></div>
+        </div>
+        <div class="blocos-guia-item">
+          <img src="jogos/blockly-games/pt-br/puzzle/motordc.png" alt="Motor DC usado na atividade Blocos" loading="lazy">
+          <div><strong>Motor DC</strong><p>Transforma energia elétrica em movimento de rotação. Pode girar rodas, hélices ou outras peças de um robô.</p></div>
+        </div>
+        <div class="blocos-guia-item">
+          <img src="jogos/blockly-games/pt-br/puzzle/ultra.png" alt="Sensor ultrassônico usado na atividade Blocos" loading="lazy">
+          <div><strong>Sensor ultrassônico</strong><p>Mede distâncias emitindo um som muito agudo e percebendo o eco que volta de um objeto.</p></div>
+        </div>
+      </div>
+    </details>
     <div id="jogoViewportArea">
       <div id="jogoViewport">
         <iframe id="gameFrame" title="Atividade LabMaker" src="about:blank" width="1024" height="560"></iframe>
@@ -150,9 +190,11 @@
   </div>
 
   <script src="src/scenes.js"></script>
+  <script src="src/tool-registry.js"></script>
   <script src="src/steps.js"></script>
   <script src="src/vr-panel.js?v=0.6.4"></script>
   <script src="src/ui.js?v=0.6.4"></script>
+  <script src="src/tool-panel.js"></script>
   <script src="src/hotspots.js?v=0.6.5"></script>
   <script src="src/tag-types/label.js"></script>
   <script src="src/tag-types/media.js"></script>

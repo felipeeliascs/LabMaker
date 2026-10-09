@@ -100,3 +100,13 @@
   .hud .stats { font-size: 12px; }
   .camera { top: 12px; left: 12px; }
 }
+
+.sensorLabel { position: absolute; pointer-events: none; transform: translate(-50%, -100%); background: #18202bd9; color: #fff; padding: 4px 8px; font-size: 11px; border-radius: 4px; }
+.metrics { position: absolute; bottom: 8px; left: 12px; max-width: 270px; padding: 6px 10px; font-size: 11px; background: var(--sim-panel); border: 1px solid var(--sim-border); border-radius: 4px; }
+.metrics summary, .section summary { cursor: pointer; }
+.section details p, .section > p { margin-top: 10px; }
+.section a { color: var(--sim-blue); font-size: 12px; }
+.robotControls { border: 0; min-width: 0; }
+.robotControls:disabled { opacity: .45; }
+.camera { flex-wrap: wrap; max-width: calc(100% - 280px); }
+@media(max-width:767px) { .camera { max-width: calc(100% - 24px); } .metrics { bottom: 120px; } }

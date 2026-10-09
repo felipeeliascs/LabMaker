@@ -38,6 +38,7 @@ function carregarCena(id) {
 
   if (window.labmakerMenuVR) window.labmakerMenuVR.close();
   fecharRecurso();
+  if (window.labmakerToolPanel) window.labmakerToolPanel.close();
   
   // Fechar painel espacial se estiver aberto
   if (window.labmakerVRPanel) {
@@ -56,6 +57,10 @@ function carregarCena(id) {
 
   criarHotspotsRecurso(cena, function (titulo, descricao) {
     abrirRecurso(titulo, descricao);
+  });
+
+  criarHotspotsFerramentas(cena, function (group) {
+    if (window.labmakerToolPanel) window.labmakerToolPanel.open(group);
   });
 
   // Hotspots das atividades da Trilha de Aprendizagem (jogos Blockly)
@@ -204,6 +209,13 @@ function abrirAtividadeJogo(atividade) {
     modoEl.textContent = estavaEmVR
       ? 'Abre em modo tela — use os controles deslizantes e botões.'
       : '';
+  }
+
+  var blocosGuia = document.getElementById('blocosGuia');
+  if (blocosGuia) {
+    var mostrarGuia = atividade.jogoId === 'blocos';
+    blocosGuia.hidden = !mostrarGuia;
+    blocosGuia.open = mostrarGuia;
   }
 
   frame.src = atividade.url;

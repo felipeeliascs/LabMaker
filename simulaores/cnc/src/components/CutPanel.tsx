@@ -30,15 +30,21 @@ export default function CutPanel({ machine, ready }: { machine: MachineState; re
   const [reading, setReading] = useState(false);
   const request = useRef(0);
   useEffect(() => {
-    const timer = setInterval(() => refresh(n => n + 1), 100);
+    let snapshot = "";
+    const timer = setInterval(() => {
+      if (document.hidden) return;
+      const cut = machine.cutting;
+      const next = [cut.status, Math.round(cut.elapsed * 5), cut.message, machine.en_marche].join("|");
+      if (next !== snapshot) { snapshot = next; refresh(n => n + 1); }
+    }, 200);
     return () => { clearInterval(timer); };
-  }, []);
+  }, [machine]);
   const cut = machine.cutting;
   const program = cut.program;
   const running = cut.status === 'running';
   const load = (text: string, name: string) => {
     machine.loadCutProgram(parseCutFile(text, name));
-    setError(''); refresh(n => n + 1);
+    setError(''); refresh(n => n + 1); window.dispatchEvent(new Event('cnc:invalidate'));
   };
   const readFile = async (file: File) => {
     const id = ++request.current;
@@ -96,7 +102,11 @@ export default function CutPanel({ machine, ready }: { machine: MachineState; re
         {[0.5, 1, 2, 5, 10].map(speed => <option key={speed} value={speed}>{speed.toLocaleString('pt-BR')}×</option>)}
       </select>
     </label>
-    <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={machine.cutaway} onChange={e => { machine.setCutaway(e.target.checked); refresh(n => n + 1); }} />Carcaça transparente para visualizar o corte</label>
+    <label className="flex items-center justify-between gap-2 text-xs">Carcaça
+      <select aria-label="Visualização da carcaça" className={theme.select} value={machine.shellHidden ? 'hidden' : machine.cutaway ? 'transparent' : 'solid'} onChange={e => { machine.setShellMode(e.target.value as 'hidden' | 'transparent' | 'solid'); refresh(n => n + 1); }}>
+        <option value="hidden">Oculta (mais leve)</option><option value="transparent">Transparente</option><option value="solid">Sólida</option>
+      </select>
+    </label>
     {error && <p role="alert" className={styles.error}>{error}</p>}
     {cut.message && <p className={theme.muted}>{cut.message}</p>}
     <p className={theme.muted}>Ligue a máquina e mantenha a tampa fechada. A importação seleciona o modo automático. O SVG corta contornos; o G-code respeita M3/M4, M5, S e F. Apenas simulação visual.</p>

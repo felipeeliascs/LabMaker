@@ -116,6 +116,7 @@ export class LaserCutting {
         const vertex = this.index * 2;
         this.tracePositions.setXYZ(vertex, BED.x + s.from.x, BED.y - s.from.y, BED.z + 0.3);
         this.tracePositions.setXYZ(vertex + 1, BED.x + this.position.x, BED.y - this.position.y, BED.z + 0.3);
+        this.tracePositions.addUpdateRange(vertex * 3, 6);
         this.tracePositions.needsUpdate = true;
         this.trace.geometry.setDrawRange(0, vertex + 2);
       }
