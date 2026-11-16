@@ -104,3 +104,17 @@ Estudantes do Ensino Fundamental II e Ensino Médio, especialmente em contextos 
 ## Licença
 
 Distribuído sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## Publicação no GitHub Pages
+
+Site: https://felipeeliascs.github.io/LabMaker/
+
+A branch `desenvolvimento-vr` guarda o código. A branch `gh-pages` contém somente os arquivos públicos e usa publicação pela raiz, com `.nojekyll` para preservar os arquivos `_next` do CNC.
+
+Para preparar uma atualização, execute na raiz do projeto, apontando para uma pasta vazia:
+
+```powershell
+node scripts/prepare-static.mjs C:\Temp\labmaker-pages /LabMaker
+```
+
+O script inclui os simuladores já compilados, o protótipo CNC Laser, os jogos e os recursos do tour. Ele adapta os caminhos absolutos do CNC somente na cópia de publicação. Depois, publique o conteúdo dessa pasta na branch `gh-pages`. Não envie fontes dos simuladores, dependências ou backups para essa branch.
