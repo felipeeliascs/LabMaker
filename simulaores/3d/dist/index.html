@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Impressão 3D</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%AC%A2%3C/text%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="./assets/index-BKtN_2hE.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B-3eFgoz.css">
+</head>
+<body>
+  <header id="header">
+    <div id="title">
+      <span class="logo">⬢</span>
+      <h1>Simulador de Impressão 3D</h1>
+    </div>
+    <div id="header-controls">
+      <button id="btn-open" class="btn btn-primary">Abrir STL…</button>
+      <input type="file" id="file-input" accept=".stl" hidden />
+      <label class="field">
+        Altura da camada
+        <select id="layer-height">
+          <option value="0.1">0,10 mm</option>
+          <option value="0.2" selected>0,20 mm</option>
+          <option value="0.3">0,30 mm</option>
+        </select>
+      </label>
+      <label class="field">
+        Preenchimento
+        <select id="infill">
+          <option value="0">0 %</option>
+          <option value="0.1">10 %</option>
+          <option value="0.2" selected>20 %</option>
+          <option value="0.4">40 %</option>
+          <option value="1">100 %</option>
+        </select>
+      </label>
+      <label class="field">
+        Exemplo
+        <select id="sample-select">
+          <option value="">— carregar exemplo —</option>
+          <option value="samples/cube20-binary.stl">Cubo 20 mm (binário)</option>
+          <option value="samples/cube20-ascii.stl">Cubo 20 mm (ASCII)</option>
+          <option value="samples/cube-offset.stl">Cubo deslocado</option>
+          <option value="samples/openbox.stl">Caixa aberta (defeituosa)</option>
+          <option value="samples/bigbox.stl">Caixa grande demais</option>
+          <option value="samples/tower.stl">Torre torcida</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main id="layout">
+    <aside id="report-panel">
+      <h2>Análise do modelo</h2>
+      <div id="report-empty" class="muted">Abra um arquivo STL para analisá-lo.</div>
+      <div id="report-content" hidden>
+        <table class="stats">
+          <tr><td>Arquivo</td><td id="stat-file">–</td></tr>
+          <tr><td>Dimensões</td><td id="stat-dims">–</td></tr>
+          <tr><td>Triângulos</td><td id="stat-tris">–</td></tr>
+          <tr><td>Volume</td><td id="stat-volume">–</td></tr>
+          <tr><td>Área da superfície</td><td id="stat-area">–</td></tr>
+          <tr><td>Material est.</td><td id="stat-material">–</td></tr>
+          <tr><td>Camadas</td><td id="stat-layers">–</td></tr>
+          <tr><td>Tempo est. de impressão</td><td id="stat-time">–</td></tr>
+        </table>
+        <h3>Imprimibilidade</h3>
+        <ul id="checks" class="checks"></ul>
+        <button id="btn-center" class="btn" hidden>⌖ Centralizar na mesa e apoiar em Z=0</button>
+        <button id="btn-slice" class="btn btn-primary">Fatiar e preparar impressão ▸</button>
+      </div>
+    </aside>
+
+    <div id="viewport-wrap">
+      <canvas id="viewport"></canvas>
+      <div id="camera-buttons">
+        <button class="btn cam-btn" data-cam="front" title="Vista frontal">Frente</button>
+        <button class="btn cam-btn" data-cam="top" title="Vista superior">Topo</button>
+        <button class="btn cam-btn" data-cam="iso" title="Vista isométrica">Iso</button>
+        <button class="btn cam-btn" id="btn-follow" title="Acompanhar o bico">Seguir</button>
+      </div>
+      <div id="drop-overlay" hidden><div>Solte o arquivo STL aqui</div></div>
+      <div id="progress-overlay" hidden>
+        <div class="progress-box">
+          <div id="progress-label">Fatiando…</div>
+          <div class="progress-track"><div id="progress-bar"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="playback-bar" class="disabled">
+    <button id="btn-restart" class="btn icon" title="Reiniciar">⏮</button>
+    <button id="btn-play" class="btn icon" title="Reproduzir / Pausar">▶</button>
+    <label class="field speed-field">
+      <span id="speed-label">8×</span>
+      <input type="range" id="speed-slider" min="0" max="100" value="45" />
+    </label>
+    <input type="range" id="scrubber" min="0" max="10000" value="0" />
+    <span id="progress-pct" class="readout">0%</span>
+    <span id="layer-indicator" class="readout">Camada – / –</span>
+  </footer>
+
+</body>
+</html>

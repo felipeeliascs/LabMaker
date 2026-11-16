@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Versão em texto das cenas e atividades do LabMaker.">
+  <title>Acessibilidade — LabMaker</title>
+  <link rel="stylesheet" href="styles/accessibility.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <header class="page-header">
+    <a id="voltarTour" href="index.html">← Voltar ao tour 360°</a>
+    <h1>LabMaker em texto</h1>
+    <p>Uma forma simples de explorar os espaços e abrir as atividades sem precisar localizar os hotspots na imagem 360°.</p>
+    <div class="reading-controls" role="group" aria-label="Preferências de leitura">
+      <button id="textoMenor" type="button" aria-label="Diminuir tamanho do texto">A−</button>
+      <button id="textoMaior" type="button" aria-label="Aumentar tamanho do texto">A+</button>
+      <button id="altoContraste" type="button" aria-pressed="false">Alto contraste</button>
+    </div>
+    <nav aria-label="Navegação desta página">
+      <a href="#cenas">Cenas</a>
+      <a href="#atividades">Atividades</a>
+      <a href="#ajuda">Como usar</a>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <section id="cenas" aria-labelledby="tituloCenas">
+      <h2 id="tituloCenas">Cenas do laboratório</h2>
+      <p>Escolha uma cena para voltar à experiência 360°. A navegação pelas cenas também está no menu principal do tour.</p>
+      <ol class="cards">
+        <li><h3>Recepção e Orientação</h3><p>Entrada e orientações do laboratório maker.</p><a href="index.html?scene=antesala">Abrir Recepção em 360°</a></li>
+        <li><h3>Hub Central do LabMaker</h3><p>Espaço central que conecta todas as áreas temáticas do LabMaker.</p><a href="index.html?scene=hub">Abrir Hub em 360°</a></li>
+        <li><h3>Programação e Computação Criativa</h3><p>Estação de programação e criação digital com atividades Blockly LabMaker.</p><a href="index.html?scene=programacao">Abrir Programação em 360°</a></li>
+        <li><h3>Eletrônica e Prototipagem</h3><p>Bancada com componentes eletrônicos, protoboard, sensores e ferramentas de prototipagem.</p><a href="index.html?scene=eletronica">Abrir Eletrônica em 360°</a></li>
+        <li><h3>Modelagem e Fabricação Digital</h3><p>Espaço com impressoras 3D, cortadora a laser e ferramentas de modelagem.</p><a href="index.html?scene=fabricacao">Abrir Fabricação em 360°</a></li>
+        <li><h3>Arena de Robótica e Desafios</h3><p>Arena para robôs, sensores, obstáculos e desafios.</p><a href="index.html?scene=arena">Abrir Arena em 360°</a></li>
+        <li><h3>Ciências e Simulações</h3><p>Explore fenômenos científicos com simulações.</p><a href="index.html?scene=ciencias">Abrir Ciências em 360°</a></li>
+        <li><h3>Inteligência Artificial</h3><p>Experimente ferramentas de aprendizado de máquina.</p><a href="index.html?scene=ia">Abrir IA em 360°</a></li>
+      </ol>
+    </section>
+
+    <section id="atividades" aria-labelledby="tituloAtividades">
+      <h2 id="tituloAtividades">Atividades</h2>
+      <p>As oito atividades estão disponíveis desde o início. A ordem abaixo é uma sugestão de percurso.</p>
+      <ol class="cards">
+        <li><h3>Blocos</h3><p>Combine as peças para completar a figura e exercitar a lógica de montagem com blocos.</p><a href="jogos/blockly-games/pt-br/blocos.html?lang=pt-br">Abrir Blocos</a></li>
+        <li><h3>Labirinto</h3><p>Programe os comandos do robô para encontrar a saída do labirinto.</p><a href="jogos/blockly-games/pt-br/labirinto.html?lang=pt-br">Abrir Labirinto</a></li>
+        <li><h3>Drone</h3><p>Pilote o drone com blocos para atravessar os obstáculos com segurança.</p><a href="jogos/blockly-games/pt-br/drone.html?lang=pt-br">Abrir Drone</a></li>
+        <li><h3>GeoBot</h3><p>Programe a tartaruga para desenhar figuras e ligar a criação digital à fabricação.</p><a href="jogos/blockly-games/pt-br/geobot.html?lang=pt-br">Abrir GeoBot</a></li>
+        <li><h3>DanceBot</h3><p>Anime figuras em sequência, dando movimento a um projeto de animação.</p><a href="jogos/blockly-games/pt-br/dancebot.html?lang=pt-br">Abrir DanceBot</a></li>
+        <li><h3>DjBot</h3><p>Componha ritmos com blocos de som para explorar padrões e repetições.</p><a href="jogos/blockly-games/pt-br/djbot.html?lang=pt-br">Abrir DjBot</a></li>
+        <li><h3>Treinamento</h3><p>Treine a mira programando ângulos para acertar os alvos da arena.</p><a href="jogos/blockly-games/pt-br/treinamento.html?lang=pt-br">Abrir Treinamento</a></li>
+        <li><h3>Torneio</h3><p>Enfrente o torneio combinando estratégia e programação avançada.</p><a href="jogos/blockly-games/pt-br/torneio.html?lang=pt-br">Abrir Torneio</a></li>
+      </ol>
+    </section>
+
+    <section id="ajuda" aria-labelledby="tituloAjuda">
+      <h2 id="tituloAjuda">Como usar</h2>
+      <p>Use Tab para passar entre links e botões e Enter para ativá-los. Os controles acima ajustam apenas esta página. No tour 360°, arraste a cena para olhar ao redor; no celular, o botão de giroscópio permite usar o movimento do aparelho. O giro de apresentação para na primeira interação.</p>
+    </section>
+  </main>
+  <script src="src/accessibility-page.js"></script>
+</body>
+</html>

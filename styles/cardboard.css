@@ -1,0 +1,73 @@
+/* Estilos exclusivos do painel Google Cardboard. */
+.cardboard-open .a-enter-vr-button { display: none; }
+.cardboard-overlay[hidden], .cardboard-overlay [hidden] { display: none; }
+.cardboard-overlay { position: fixed; inset: 0; z-index: 45; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; background: rgba(15, 23, 42, .68); }
+.cardboard-panel { display: flex; flex-direction: column; width: min(100%, 1000px); max-height: 92dvh; background: #fff; color: #27324a; border-radius: 24px; overflow: hidden; box-shadow: 0 24px 90px #0005; text-align: left; }
+.cardboard-header { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex: none; padding: 22px 30px 18px; border-bottom: 1px solid #e9e5f5; }
+.cardboard-badge { display: inline-block; background: #eee7ff; color: #6535b4; padding: 6px 9px; border-radius: 7px; font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+.cardboard-header h2 { margin: 8px 0 0; color: #362658; font-size: clamp(18px, 3vw, 28px); letter-spacing: -.03em; }
+#cardboardClose { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 14px; border: 1px solid #ded6ef; background: #fff; color: #47315f; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; }
+#cardboardClose span { font-size: 24px; line-height: 1; }
+#cardboardClose:hover { background: #f4efff; }
+.cardboard-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 26px 30px; line-height: 1.65; font-size: 16px; }
+.cardboard-panel :focus-visible { outline: 3px solid #6f42c1; outline-offset: 3px; }
+.cardboard-hero { display: grid; grid-template-columns: 1.12fr 1fr; align-items: center; gap: 24px; }
+.cardboard-eyebrow { color: #7146ad; font-size: 11px; letter-spacing: .08em; font-weight: 800; margin: 0 0 10px; }
+.cardboard-hero h3 { font-size: clamp(25px, 4vw, 35px); line-height: 1.18; letter-spacing: -.03em; margin: 0 0 18px; color: #302347; }
+.cardboard-hero p { margin: 12px 0; }
+.cardboard-hero figure { margin: 0; text-align: center; }
+.cardboard-hero img { display: block; width: 100%; height: auto; }
+.cardboard-hero figcaption { font-size: 12px; color: #716984; margin-top: 8px; }
+.cardboard-tip { background: #f1edfc; border-left: 5px solid #9966ff; padding: 14px 18px; border-radius: 0 14px 14px 0; margin: 26px 0; font-size: 14px; }
+.cardboard-tip strong { color: #573684; }
+.cardboard-tip p { margin: 4px 0 0; }
+.cardboard-section { margin-top: 30px; }
+.cardboard-section h3 { margin: 0 0 14px; font-size: 23px; line-height: 1.35; color: #362658; }
+.cardboard-materials { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.cardboard-materials li { padding: 7px 12px; border: 1px solid #ded7ee; border-radius: 10px; color: #554367; background: #faf8fe; font-size: 14px; }
+.cardboard-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.cardboard-section-heading > span { font-size: 10px; color: #806b96; font-weight: bold; letter-spacing: .06em; white-space: nowrap; }
+.cardboard-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cardboard-steps li { overflow: hidden; border: 1px solid #e7e2ee; border-radius: 18px; background: #fff; }
+.cardboard-steps img { display: block; width: 100%; height: 154px; object-fit: contain; background: #f8f6fc; }
+.cardboard-steps li > div { padding: 16px 18px; }
+.cardboard-step-number { display: inline-grid; place-items: center; width: 27px; height: 27px; border-radius: 9px; background: #7f4cc8; color: #fff; font-weight: bold; font-size: 14px; vertical-align: middle; }
+.cardboard-steps h4 { display: inline; margin: 0 0 0 7px; font-size: 17px; color: #443056; }
+.cardboard-steps p { margin: 10px 0 0; font-size: 14px; }
+.cardboard-care { border-radius: 14px; padding: 15px 18px; background: #fff7e5; color: #705422; font-size: 14px; }
+.cardboard-resources { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; }
+.cardboard-video-card, .cardboard-download-card { border: 1px solid #e5dfed; border-radius: 18px; padding: 20px; }
+.cardboard-resources h3 { margin: 8px 0 10px; font-size: 22px; }
+.cardboard-resources p { font-size: 14px; margin: 10px 0; }
+.cardboard-play { display: flex; width: 100%; align-items: center; justify-content: center; gap: 14px; min-height: 150px; border: 0; border-radius: 12px; padding: 20px; color: #4e2f75; background: #eee6ff; cursor: pointer; font-size: 15px; font-weight: bold; text-align: left; margin: 18px 0 14px; }
+.cardboard-play:hover { background: #e4d5ff; }
+.cardboard-play-icon { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; background: #7143b6; color: #fff; font-size: 18px; }
+.cardboard-play small { display: block; font-weight: normal; font-size: 12px; margin-top: 4px; }
+.cardboard-video-wrap { aspect-ratio: 16 / 9; margin: 18px 0 14px; border-radius: 12px; overflow: hidden; background: #f1edfc; }
+#cardboardVideo { display: block; width: 100%; height: 100%; border: 0; }
+.cardboard-panel a { color: #6940a4; text-underline-offset: 3px; }
+.cardboard-video-card > a { display: inline-block; padding: 8px 0; font-weight: bold; font-size: 14px; }
+.cardboard-resources .cardboard-small { font-size: 12px; color: #746d7e; }
+.cardboard-download-card img { display: block; width: 110px; height: auto; margin: 14px auto; border: 1px solid #e5dfed; }
+.cardboard-panel .cardboard-action { display: block; border-radius: 10px; background: #7543bd; color: #fff; padding: 12px 14px; font-size: 14px; text-align: center; font-weight: bold; text-decoration: none; }
+.cardboard-panel .cardboard-action:hover { background: #60369d; }
+.cardboard-download { display: block; text-align: center; padding: 10px 0 0; font-size: 14px; }
+.cardboard-footer { margin-top: 30px; padding-top: 18px; border-top: 1px solid #eee9f3; font-size: 12px; color: #72697e; }
+.cardboard-footer > span { display: block; margin-top: 8px; }
+@media (max-width: 680px) {
+  .cardboard-overlay { padding: 10px; }
+  .cardboard-panel { border-radius: 18px; max-height: calc(100dvh - 20px); }
+  .cardboard-header { padding: 16px 18px; gap: 10px; }
+  .cardboard-scroll { padding: 20px 18px; }
+  .cardboard-hero { grid-template-columns: 1fr; gap: 8px; }
+  .cardboard-hero figure { max-width: 330px; margin: 0 auto; }
+  .cardboard-section h3 { font-size: 21px; }
+  .cardboard-section-heading { display: block; margin-bottom: 12px; }
+  .cardboard-section-heading h3 { margin-bottom: 4px; }
+  .cardboard-steps, .cardboard-resources { grid-template-columns: 1fr; }
+  .cardboard-steps img { height: 150px; }
+  .cardboard-scroll { font-size: 15px; }
+  #cardboardClose { padding: 8px 10px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: no-preference) { .cardboard-panel { animation: cardboard-appear .18s ease-out; } }
+@keyframes cardboard-appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

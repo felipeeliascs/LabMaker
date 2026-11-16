@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protótipo — Gravação a Laser em MDF (isolado)</title>
+  <style>
+    :root { --bg:#14171c; --panel:#1e222a; --fg:#e8eaed; --accent:#ff5722; --ok:#4caf50; --warn:#ffb300; }
+    * { box-sizing: border-box; }
+    html, body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+      font-family: Arial, Helvetica, sans-serif; overflow:hidden; }
+    #app { position:fixed; inset:0; }
+    canvas { display:block; }
+    #painel {
+      position:fixed; top:12px; left:12px; width:270px; z-index:10;
+      background:rgba(20,23,28,.92); border:1px solid #2c313a; border-radius:10px;
+      padding:14px; font-size:13px;
+    }
+    #painel h1 { margin:0 0 4px; font-size:15px; color:var(--accent); }
+    #painel .sub { margin:0 0 12px; font-size:11px; color:#9aa0a6; }
+    .campo { margin:0 0 10px; }
+    .campo label { display:flex; justify-content:space-between; margin-bottom:4px; color:#c7ccd1; }
+    .campo input[type=range] { width:100%; }
+    .botoes { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+    button { padding:8px 10px; border:none; border-radius:6px; background:#39424e; color:#fff;
+      font-size:13px; cursor:pointer; }
+    button:hover { background:#46505e; }
+    button.primario { background:var(--accent); }
+    button.primario:hover { background:#ff7043; }
+    button:disabled { opacity:.45; cursor:default; }
+    #status { border-top:1px solid #2c313a; padding-top:10px; font-size:12px; line-height:1.5; }
+    #status .estado { font-weight:bold; }
+    #aviso { color:var(--warn); min-height:16px; margin-top:6px; }
+    #prog { height:6px; background:#2c313a; border-radius:3px; overflow:hidden; margin-top:6px; }
+    #prog > div { height:100%; width:0%; background:var(--ok); }
+    .tampa-aberta .tampa-selo { color:var(--warn); }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="painel">
+    <h1>Gravação a Laser em MDF</h1>
+    <p class="sub">Protótipo visual isolado — não integra o LabMaker</p>
+
+    <div class="campo">
+      <label>Potência do laser <span id="potVal">70%</span></label>
+      <input type="range" id="pot" min="0" max="100" value="70" />
+    </div>
+    <div class="campo">
+      <label>Velocidade <span id="velVal">80 mm/s</span></label>
+      <input type="range" id="vel" min="20" max="300" value="80" />
+    </div>
+
+    <div class="botoes">
+      <button id="btnIniciar" class="primario">Iniciar</button>
+      <button id="btnPausar">Pausar</button>
+      <button id="btnResetar">Resetar</button>
+      <button id="btnTampa">Abrir tampa</button>
+    </div>
+
+    <div id="status" class="tampa-selo">
+      <div>Estado: <span class="estado" id="estado">Ocioso</span></div>
+      <div>Tampa: <span id="tampaEstado">fechada</span></div>
+      <div id="prog"><div id="progBar"></div></div>
+      <div id="aviso"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // ---------- parâmetros ----------
+    const PLACA = { largura: 200, profundidade: 150, espessura: 12 }; // mm
+    const ALTURA_CABECOTE = 60;   // altura do cabeçote sobre a placa (mm)
+    const CANVAS_W = 1024, CANVAS_H = 768; // 4:3, casa com 200x150
+
+    // Lista simples de pontos do percurso (mm, origem no canto da placa).
+    // Uma estrela simples, fechada.
+    const PONTOS = [
+      { x: 100, y: 25 },
+      { x: 122, y: 120 },
+      { x: 45, y: 58 },
+      { x: 155, y: 58 },
+      { x: 78, y: 120 },
+      { x: 100, y: 25 }, // volta ao início (traço fechado)
+    ];
+
+    // ---------- estado ----------
+    const estado = {
+      modo: 'ocioso',        // ocioso | operando | pausado | concluido
+      tampaAberta: false,
+      potencia: 0.7,
+      velocidade: 80,        // mm/s
+      distAcumulada: 0,
+      total: 0,
+      ultimo: null,          // última posição desenhada {x,y} em mm
+    };
+
+    // ---------- cena ----------
+    const app = document.getElementById('app');
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    app.appendChild(renderer.domElement);
+
+    const cena = new THREE.Scene();
+    cena.background = new THREE.Color(0x11141a);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.set(180, 190, 240);
+
+    const controles = new OrbitControls(camera, renderer.domElement);
+    controles.target.set(0, 10, 0);
+    controles.enableDamping = true;
+
+    cena.add(new THREE.HemisphereLight(0xffffff, 0x333333, 0.9));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.1);
+    dir.position.set(120, 200, 120);
+    cena.add(dir);
+
+    // ---------- placa de MDF ----------
+    const placa = new THREE.Mesh(
+      new THREE.BoxGeometry(PLACA.largura, PLACA.espessura, PLACA.profundidade),
+      new THREE.MeshStandardMaterial({ color: 0xb9895a, roughness: 0.95, metalness: 0.0 })
+    );
+    placa.position.y = -PLACA.espessura / 2; // topo da placa em y=0
+    cena.add(placa);
+
+    // Canvas de gravação aplicado sobre o topo da placa
+    const canvas = document.createElement('canvas');
+    canvas.width = CANVAS_W;
+    canvas.height = CANVAS_H;
+    const ctx = canvas.getContext('2d');
+    const textura = new THREE.CanvasTexture(canvas);
+    textura.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const marcacao = new THREE.Mesh(
+      new THREE.PlaneGeometry(PLACA.largura, PLACA.profundidade),
+      new THREE.MeshBasicMaterial({ map: textura, transparent: true, depthWrite: false })
+    );
+    marcacao.rotation.x = -Math.PI / 2;
+    marcacao.position.y = 0.15;
+    cena.add(marcacao);
+
+    // ---------- cabeçote + feixe ----------
+    const cabecote = new THREE.Group();
+    const corpo = new THREE.Mesh(
+      new THREE.BoxGeometry(22, 16, 22),
+      new THREE.MeshStandardMaterial({ color: 0x2f3640, roughness: 0.5, metalness: 0.6 })
+    );
+    cabecote.add(corpo);
+    const bico = new THREE.Mesh(
+      new THREE.CylinderGeometry(2, 3, 10, 16),
+      new THREE.MeshStandardMaterial({ color: 0x9aa0a6, roughness: 0.4, metalness: 0.8 })
+    );
+    bico.position.y = -12;
+    cabecote.add(bico);
+    cabecote.position.set(PONTOS[0].x - PLACA.largura / 2, ALTURA_CABECOTE, -(PONTOS[0].y - PLACA.profundidade / 2));
+    cena.add(cabecote);
+
+    const feixe = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.8, 0.8, ALTURA_CABECOTE - 8, 12),
+      new THREE.MeshBasicMaterial({ color: 0xff2b2b, transparent: true, opacity: 0.85, depthWrite: false })
+    );
+    feixe.visible = false;
+    cena.add(feixe);
+
+    const brilho = new THREE.PointLight(0xff3b30, 0, 40);
+    cena.add(brilho);
+
+    // ---------- tampa virtual (intertravamento visual) ----------
+    const dobradica = new THREE.Group();
+    dobradica.position.set(0, 2, -PLACA.profundidade / 2 - 4);
+    const tampa = new THREE.Mesh(
+      new THREE.BoxGeometry(PLACA.largura + 30, 2, PLACA.profundidade + 30),
+      new THREE.MeshStandardMaterial({ color: 0x6fa8dc, transparent: true, opacity: 0.28, roughness: 0.1, metalness: 0.0 })
+    );
+    tampa.position.z = (PLACA.profundidade + 30) / 2;
+    dobradica.add(tampa);
+    cena.add(dobradica);
+
+    // ---------- mapeamento mm -> canvas / cena ----------
+    const mmParaCanvas = (p) => ({
+      x: (p.x / PLACA.largura) * CANVAS_W,
+      y: (1 - p.y / PLACA.profundidade) * CANVAS_H,
+    });
+    const mmParaMundo = (p) => new THREE.Vector3(
+      p.x - PLACA.largura / 2, 0, -(p.y - PLACA.profundidade / 2));
+
+    // ---------- percurso: comprimentos acumulados ----------
+    const segmentos = [];
+    estado.total = 0;
+    for (let i = 0; i < PONTOS.length - 1; i++) {
+      const a = PONTOS[i], b = PONTOS[i + 1];
+      const comp = Math.hypot(b.x - a.x, b.y - a.y);
+      segmentos.push({ a, b, comp, ini: estado.total });
+      estado.total += comp;
+    }
+
+    function pontoEmDistancia(d) {
+      if (d <= 0) return { ...PONTOS[0] };
+      if (d >= estado.total) return { ...PONTOS[PONTOS.length - 1] };
+      for (const s of segmentos) {
+        if (d <= s.ini + s.comp) {
+          const t = (d - s.ini) / (s.comp || 1);
+          return { x: s.a.x + (s.b.x - s.a.x) * t, y: s.a.y + (s.b.y - s.a.y) * t };
+        }
+      }
+      return { ...PONTOS[PONTOS.length - 1] };
+    }
+
+    // ---------- UI ----------
+    const ui = {
+      pot: document.getElementById('pot'),
+      potVal: document.getElementById('potVal'),
+      vel: document.getElementById('vel'),
+      velVal: document.getElementById('velVal'),
+      iniciar: document.getElementById('btnIniciar'),
+      pausar: document.getElementById('btnPausar'),
+      resetar: document.getElementById('btnResetar'),
+      tampa: document.getElementById('btnTampa'),
+      estado: document.getElementById('estado'),
+      tampaEstado: document.getElementById('tampaEstado'),
+      progBar: document.getElementById('progBar'),
+      aviso: document.getElementById('aviso'),
+    };
+
+    ui.pot.addEventListener('input', () => {
+      estado.potencia = +ui.pot.value / 100;
+      ui.potVal.textContent = ui.pot.value + '%';
+    });
+    ui.vel.addEventListener('input', () => {
+      estado.velocidade = +ui.vel.value;
+      ui.velVal.textContent = ui.vel.value + ' mm/s';
+    });
+    ui.iniciar.addEventListener('click', iniciar);
+    ui.pausar.addEventListener('click', pausar);
+    ui.resetar.addEventListener('click', resetar);
+    ui.tampa.addEventListener('click', alternarTampa);
+
+    function aviso(msg) { ui.aviso.textContent = msg || ''; }
+
+    function iniciar() {
+      if (estado.tampaAberta) {
+        aviso('Intertravamento: feche a tampa para iniciar o laser.');
+        return;
+      }
+      aviso('');
+      if (estado.modo === 'concluido') resetar();
+      estado.modo = 'operando';
+      atualizarUI();
+    }
+
+    function pausar() {
+      if (estado.modo === 'operando') {
+        estado.modo = 'pausado';
+        atualizarUI();
+      }
+    }
+
+    function resetar() {
+      estado.modo = 'ocioso';
+      estado.distAcumulada = 0;
+      estado.ultimo = { ...PONTOS[0] };
+      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+      textura.needsUpdate = true;
+      aviso('');
+      posicionarCabecote(PONTOS[0]);
+      atualizarUI();
+    }
+
+    function alternarTampa() {
+      estado.tampaAberta = !estado.tampaAberta;
+      dobradica.rotation.x = estado.tampaAberta ? -1.75 : 0; // ~-100°
+      // Intertravamento: abrir a tampa durante a operação pausa o laser
+      if (estado.tampaAberta && estado.modo === 'operando') {
+        estado.modo = 'pausado';
+        aviso('Tampa aberta: operação pausada por segurança.');
+      } else if (estado.tampaAberta) {
+        aviso('Tampa aberta: o laser não inicia até a tampa ser fechada.');
+      } else {
+        aviso('');
+      }
+      atualizarUI();
+    }
+
+    const rotuloEstado = { ocioso: 'Ocioso', operando: 'Em operação', pausado: 'Pausado', concluido: 'Concluído' };
+    function atualizarUI() {
+      ui.estado.textContent = rotuloEstado[estado.modo];
+      ui.tampaEstado.textContent = estado.tampaAberta ? 'ABERTA' : 'fechada';
+      ui.tampa.textContent = estado.tampaAberta ? 'Fechar tampa' : 'Abrir tampa';
+      ui.iniciar.disabled = estado.modo === 'operando';
+      ui.pausar.disabled = estado.modo !== 'operando';
+      const pct = estado.total ? Math.min(1, estado.distAcumulada / estado.total) : 0;
+      ui.progBar.style.width = Math.round(pct * 100) + '%';
+      feixe.visible = estado.modo === 'operando';
+      brilho.intensity = estado.modo === 'operando' ? 2.5 * estado.potencia : 0;
+    }
+
+    function posicionarCabecote(p) {
+      const v = mmParaMundo(p);
+      cabecote.position.x = v.x;
+      cabecote.position.z = v.z;
+      feixe.position.set(v.x, (ALTURA_CABECOTE - 8) / 2 + 1, v.z);
+      brilho.position.set(v.x, 4, v.z);
+    }
+
+    // ---------- desenho progressivo da marca ----------
+    function marcarAte(destino) {
+      if (!estado.ultimo) estado.ultimo = pontoEmDistancia(0);
+      const a = mmParaCanvas(estado.ultimo);
+      const b = mmParaCanvas(destino);
+      ctx.strokeStyle = `rgba(28,14,6,${0.25 + 0.65 * estado.potencia})`;
+      ctx.lineWidth = 2 + 5 * estado.potencia;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+      textura.needsUpdate = true;
+      estado.ultimo = { ...destino };
+    }
+
+    resetar();
+
+    // ---------- loop ----------
+    const relogio = new THREE.Clock();
+    let ativo = true;
+    document.addEventListener('visibilitychange', () => { ativo = !document.hidden; });
+
+    function animar() {
+      requestAnimationFrame(animar);
+      const dt = Math.min(relogio.getDelta(), 0.05);
+
+      if (ativo && estado.modo === 'operando') {
+        const proxima = Math.min(estado.total, estado.distAcumulada + estado.velocidade * dt);
+        const ponto = pontoEmDistancia(proxima);
+        marcarAte(ponto);
+        posicionarCabecote(ponto);
+        estado.distAcumulada = proxima;
+        if (estado.distAcumulada >= estado.total) {
+          estado.modo = 'concluido';
+          feixe.visible = false;
+          brilho.intensity = 0;
+        }
+        atualizarUI();
+      } else {
+        posicionarCabecote(pontoEmDistancia(estado.distAcumulada));
+      }
+
+      controles.update();
+      renderer.render(cena, camera);
+    }
+    animar();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Expor para testes automatizados (sem afetar o LabMaker)
+    window.__laserPrototipo = {
+      estado, iniciar, pausar, resetar, alternarTampa, PONTOS,
+      canvas,
+      feixeVisivel() { return feixe.visible; },
+      contarMarcas() {
+        const d = ctx.getImageData(0, 0, CANVAS_W, CANVAS_H).data;
+        let n = 0;
+        for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
+        return n;
+      },
+    };
+  </script>
+</body>
+</html>
